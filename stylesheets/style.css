@@ -1,0 +1,35 @@
+body {
+  background: #f1f1f1;
+}
+
+canvas {
+  position: absolute;
+  left: 25%;
+  top: 5%;
+}
+
+div {
+  opacity: 0;
+}
+
+#background {
+  background: #afdae5;
+  z-index: 1;
+
+}
+
+#pokemon {
+  z-index: 2;
+}
+
+#obstacles {
+  z-index: 3;
+}
+
+#pokeballs {
+  z-index: 4;
+}
+
+#menu {
+  z-index: 5;
+}
