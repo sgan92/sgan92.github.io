@@ -87,23 +87,23 @@
 	
 	  this.canvas = document.getElementById("background");
 	  this.context = this.canvas.getContext("2d");
-	  this.gameOver = true;
+	  this.gameOver = false;
 	
 	  this.startScreen();
 	  this.generateClouds();
+	
+	  this.fn = this.startGame.bind(this);
+	  document.addEventListener("keyup", this.fn, false);
 	};
 	
 	Game.prototype = {
 	  startScreen: function () {
-	    this.fn = this.startGame.bind(this);
-	    document.addEventListener("keyup", this.fn, false);
 	    this.menu = new Menu(false, 0);
 	    window.setInterval(this.generateClouds.bind(this), 5000);
 	  },
 	
 	  startGame: function (e) {
-	    if (e.keyCode === 13 && this.gameOver) {
-	      document.removeEventListener("keyup", this.fn, false);
+	    if (e.keyCode === 13) {
 	      this.gameOver = false;
 	      this.context.clearRect(0, 0, 800, 1000);
 	
@@ -122,6 +122,7 @@
 	
 	      this.addBall = window.setInterval(this.addPokeBalls.bind(this), 4567);
 	      this.addBuilding = window.setInterval(this.addMoreObstacles.bind(this), 6000);
+	      document.removeEventListener("keyup", this.fn);
 	    }
 	  },
 	
@@ -147,49 +148,25 @@
 	  isBetween: function (type, itemX, itemY, item) {
 	    let width;
 	    let height;
-	    let hitPokemon = false;
 	
 	    if (type === "pokeball") {
-	      hitPokemon = this.checkPokeBalls(itemX, itemY);
+	      width = 22;
+	      height = 22;
 	    } else if (type === "building") {
-	      hitPokemon = this.checkBuildings(itemX, itemY);
+	      width = 395;
+	      height = 270;
 	    } else if (type === "balloon") {
-	      hitPokemon = this.checkBalloons(itemX, itemY);
+	      width = 340;
+	      height = 180;
 	    }
 	
-	    if (hitPokemon) {
+	    if (!(this.pokemon.position.x > itemX + width || this.pokemon.position.x + this.pokemon.width < itemX || this.pokemon.position.y > itemY + height || this.pokemon.position.y + this.pokemon.height < itemY)) {
 	      return true;
-	    } else if (type === "building" && this.pokemon.position.x >= itemX + 400) {
+	    } else if (type === "building" && this.pokemon.position.x >= itemX + width) {
 	      this.buildings.splice(this.buildings.indexOf(item), 1);
 	      this.menu.currentScore += 1;
 	      this.menu.startScoring();
 	      return false;
-	    }
-	  },
-	
-	  checkBalloons: function (xPos, yPos) {
-	    if (this.checkHitBoxes(xPos, yPos - 172, 323, 233) || this.checkHitBoxes(xPos + 90, yPos + 55, 121, 167)) {
-	      return true;
-	    }
-	    return false;
-	  },
-	
-	  checkBuildings: function (xPos, yPos) {
-	    if (this.checkHitBoxes(xPos + 15, yPos + 130, 377, 274) || this.checkHitBoxes(xPos + 30, yPos + 70, 251, 61) || this.checkHitBoxes(xPos + 100, yPos + 20, 50, 50)) {
-	      return true;
-	    }
-	  },
-	
-	  checkPokeBalls: function (xPos, yPos) {
-	    if (this.checkHitBoxes(xPos, yPos, 22, 22)) {
-	      return true;
-	    }
-	    return false;
-	  },
-	
-	  checkHitBoxes: function (itemX, itemY, width, height) {
-	    if (!(this.pokemon.position.x > itemX + width || this.pokemon.position.x + this.pokemon.width < itemX || this.pokemon.position.y > itemY + height || this.pokemon.position.y + this.pokemon.height < itemY)) {
-	      return true;
 	    }
 	  },
 	
@@ -233,7 +210,7 @@
 	  this.game = game;
 	  this.canvas = document.getElementsByTagName("canvas")[0];
 	  this.context = this.canvas.getContext('2d');
-	  this.velocity = 1;
+	  this.velocity = 1.5;
 	
 	  this.instantiateClouds();
 	
@@ -254,22 +231,22 @@
 	
 	  instantiateClouds: function () {
 	    this.cloud1 = new Image();
-	    this.cloud1.src = "./images/cloud1.png";
+	    this.cloud1.src = "../images/cloud1.png";
 	    this.cloud1.height = 200;
 	    this.cloud1.width = 300;
 	
 	    this.cloud2 = new Image();
-	    this.cloud2.src = "./images/cloud2.png";
+	    this.cloud2.src = "../images/cloud2.png";
 	    this.cloud2.height = 108;
 	    this.cloud2.width = 231;
 	
 	    this.cloud3 = new Image();
-	    this.cloud3.src = "./images/cloud3.png";
+	    this.cloud3.src = "../images/cloud3.png";
 	    this.cloud3.height = 108;
 	    this.cloud3.width = 214;
 	
 	    this.cloud4 = new Image();
-	    this.cloud4.src = "./images/cloud4.png";
+	    this.cloud4.src = "../images/cloud4.png";
 	    this.cloud4.height = 240;
 	    this.cloud4.width = 240;
 	  },
@@ -278,6 +255,8 @@
 	    this.position.x -= this.velocity;
 	    if (this.position.x >= -300) {
 	      this.drawImg(this.position.x, this.position.y, this.cloud.width, this.cloud.height);
+	    } else {
+	      window.clearInterval(this.cloudInterval);
 	    }
 	  },
 	
@@ -287,10 +266,7 @@
 	  },
 	
 	  render: function () {
-	    var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
-	
-	    this.slowlyDrifting();
-	    requestAnimationFrame(this.render.bind(this));
+	    this.cloudInterval = window.setInterval(this.slowlyDrifting.bind(this), 17);
 	  }
 	
 	};
@@ -304,8 +280,8 @@
 	const Pokemon = function (position, game) {
 	  this.position = position;
 	  this.game = game;
-	  this.width = 65;
-	  this.height = 65;
+	  this.width = 88;
+	  this.height = 88;
 	
 	  this.gravity = 0.4;
 	  this.velocity = 0;
@@ -326,7 +302,7 @@
 	
 	  makeUpSprite: function () {
 	    const pkmnSpriteUp = new Image();
-	    pkmnSpriteUp.src = "./images/bflyup.png";
+	    pkmnSpriteUp.src = "../images/bflyup.png";
 	
 	    this.spriteUp = {
 	      image: pkmnSpriteUp
@@ -335,7 +311,7 @@
 	
 	  makeDownSprite: function () {
 	    const pkmnSpriteDown = new Image();
-	    pkmnSpriteDown.src = "./images/bflydown.png";
+	    pkmnSpriteDown.src = "../images/bflydown.png";
 	
 	    this.spriteDown = {
 	      image: pkmnSpriteDown
@@ -468,7 +444,7 @@
 	  this.constantVelocity = 5;
 	
 	  const building = new Image();
-	  building.src = "./images/building.png";
+	  building.src = "../images/building.png";
 	
 	  this.building = {
 	    image: building
@@ -490,6 +466,7 @@
 	    if (!this.game.over() && this.position.x >= -1200) {
 	      this.drawImg(this.position.x, this.position.y);
 	    } else if (this.game.over()) {
+	      this.game.overScreen();
 	      window.clearInterval(this.buildingInterval);
 	    }
 	  },
@@ -518,7 +495,7 @@
 	  this.constantVelocity = 5;
 	
 	  const balloon = new Image();
-	  balloon.src = "./images/balloon.png";
+	  balloon.src = "../images/balloon.png";
 	
 	  this.balloon = {
 	    image: balloon
@@ -566,7 +543,6 @@
 	const Menu = function (started, currentScore) {
 	  this.started = started;
 	  this.currentScore = currentScore;
-	  this.bestScore = 0;
 	
 	  this.canvas = document.getElementById("menu");
 	  this.context = this.canvas.getContext("2d");
@@ -579,7 +555,7 @@
 	  gameIsOverBuddy: function () {
 	    this.context.clearRect(0, 0, 800, 1000);
 	    const over = new Image();
-	    over.src = "./images/gameOver.png";
+	    over.src = "../images/gameOver.png";
 	    over.onload = function () {
 	      this.context.drawImage(over, 260, 300);
 	      this.revealScore();
@@ -587,17 +563,14 @@
 	  },
 	
 	  revealScore: function () {
-	
-	    this.isBestScore();
-	
 	    let whichImage = new Image();
 	
 	    if (this.currentScore <= 6) {
-	      whichImage.src = "./images/bronze.png";
+	      whichImage.src = "../images/bronze.png";
 	    } else if (this.currentScore <= 20) {
-	      whichImage.src = "./images/silver.png";
+	      whichImage.src = "../images/silver.png";
 	    } else {
-	      whichImage.src = "./images/gold.png";
+	      whichImage.src = "../images/gold.png";
 	    }
 	
 	    whichImage.onload = function () {
@@ -608,24 +581,7 @@
 	      this.context.font = "22px Share Tech Mono";
 	      this.context.strokeText(this.currentScore, 360, 520);
 	      this.context.stroke();
-	
-	      this.revealBestScore();
 	    }.bind(this);
-	  },
-	
-	  isBestScore: function () {
-	    if (this.bestScore < this.currentScore) {
-	      this.bestScore = this.currentScore;
-	    }
-	  },
-	
-	  revealBestScore: function () {
-	    this.context.lineWidth = 2;
-	    this.context.strokeStyle = "black";
-	
-	    this.context.font = "22px Share Tech Mono";
-	    this.context.strokeText("Your highest score is " + this.bestScore, 260, 610);
-	    this.context.stroke();
 	  },
 	
 	  startScoring: function () {
@@ -637,8 +593,8 @@
 	    this.context.strokeStyle = "black";
 	
 	    this.context.font = "120px Share Tech Mono";
-	    this.context.fillText(this.currentScore, 360, 200);
-	    this.context.strokeText(this.currentScore, 360, 200);
+	    this.context.fillText(this.currentScore, 390, 200);
+	    this.context.strokeText(this.currentScore, 390, 200);
 	
 	    this.context.fill();
 	    this.context.stroke();
@@ -648,19 +604,13 @@
 	    const startButton = new Image();
 	    const instructions = new Image();
 	    const logo = new Image();
-	    startButton.src = "./images/startButton.png";
-	    instructions.src = "./images/instructions.png";
-	    logo.src = "./images/logo.png";
+	    startButton.src = "../images/startButton.png";
+	    instructions.src = "../images/instructions.png";
+	    logo.src = "../images/logo.png";
 	    startButton.onload = function () {
-	      this.context.drawImage(startButton, 260, 400);
-	    }.bind(this);
-	
-	    instructions.onload = function () {
-	      this.context.drawImage(instructions, 230, 530);
-	    }.bind(this);
-	
-	    logo.onload = function () {
 	      this.context.drawImage(logo, 130, 180);
+	      this.context.drawImage(startButton, 260, 400);
+	      this.context.drawImage(instructions, 230, 530);
 	    }.bind(this);
 	  }
 	};
