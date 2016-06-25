@@ -242,73 +242,79 @@
 
 	"use strict";
 	
-	var Cloud = function Cloud(position, game) {
-	  this.position = position;
-	  this.game = game;
-	  this.canvas = document.getElementsByTagName("canvas")[0];
-	  this.context = this.canvas.getContext('2d');
-	  this.velocity = 1.5;
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	  this.instantiateClouds();
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
-	  var possibleClouds = [this.cloud1, this.cloud2, this.cloud3, this.cloud4];
+	var Cloud = function () {
+	  function Cloud(position, game) {
+	    _classCallCheck(this, Cloud);
 	
-	  var randomCloud = possibleClouds[Math.floor(Math.random() * 4)];
+	    this.position = position;
+	    this.game = game;
+	    this.canvas = document.getElementsByTagName("canvas")[0];
+	    this.context = this.canvas.getContext('2d');
+	    this.velocity = 1.5;
 	
-	  this.cloud = {
-	    image: randomCloud,
-	    width: randomCloud.width,
-	    height: randomCloud.height
-	  };
+	    this.instantiateClouds();
 	
-	  this.render();
-	};
+	    var possibleClouds = [this.cloud1, this.cloud2, this.cloud3, this.cloud4];
 	
-	Cloud.prototype = {
+	    var randomCloud = possibleClouds[Math.floor(Math.random() * 4)];
 	
-	  instantiateClouds: function instantiateClouds() {
-	    this.cloud1 = new Image();
-	    this.cloud1.src = "./images/cloud1.png";
-	    this.cloud1.height = 200;
-	    this.cloud1.width = 300;
+	    this.cloud = {
+	      image: randomCloud,
+	      width: randomCloud.width,
+	      height: randomCloud.height
+	    };
 	
-	    this.cloud2 = new Image();
-	    this.cloud2.src = "./images/cloud2.png";
-	    this.cloud2.height = 108;
-	    this.cloud2.width = 231;
-	
-	    this.cloud3 = new Image();
-	    this.cloud3.src = "./images/cloud3.png";
-	    this.cloud3.height = 108;
-	    this.cloud3.width = 214;
-	
-	    this.cloud4 = new Image();
-	    this.cloud4.src = "./images/cloud4.png";
-	    this.cloud4.height = 240;
-	    this.cloud4.width = 240;
-	  },
-	
-	  slowlyDrifting: function slowlyDrifting() {
-	    this.position.x -= this.velocity;
-	
-	    if (this.position.x >= -300) {
-	      this.drawImg(this.position.x, this.position.y, this.cloud.width, this.cloud.height);
-	    }
-	  },
-	
-	  drawImg: function drawImg(x, y, width, height) {
-	    this.context.clearRect(x, y, width, height);
-	    this.context.drawImage(this.cloud.image, x, y);
-	  },
-	
-	  render: function render() {
-	    var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
-	
-	    this.slowlyDrifting();
-	    requestAnimationFrame(this.render.bind(this));
+	    this.render();
 	  }
 	
-	};
+	  _createClass(Cloud, [{
+	    key: "instantiateClouds",
+	    value: function instantiateClouds() {
+	      this.cloud1 = new Image();
+	      this.cloud1.src = "./images/cloud1.png";
+	      this.cloud1.height = 200;
+	      this.cloud1.width = 300;
+	
+	      this.cloud2 = new Image();
+	      this.cloud2.src = "./images/cloud2.png";
+	      this.cloud2.height = 108;
+	      this.cloud2.width = 231;
+	
+	      this.cloud3 = new Image();
+	      this.cloud3.src = "./images/cloud3.png";
+	      this.cloud3.height = 108;
+	      this.cloud3.width = 214;
+	
+	      this.cloud4 = new Image();
+	      this.cloud4.src = "./images/cloud4.png";
+	      this.cloud4.height = 240;
+	      this.cloud4.width = 240;
+	    }
+	  }, {
+	    key: "slowlyDrifting",
+	    value: function slowlyDrifting() {
+	      this.position.x -= this.velocity;
+	
+	      if (this.position.x >= -300) {
+	        this.drawImg(this.position.x, this.position.y, this.cloud.width, this.cloud.height);
+	      }
+	    }
+	  }, {
+	    key: "render",
+	    value: function render() {
+	      var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+	
+	      this.slowlyDrifting();
+	      requestAnimationFrame(this.render.bind(this));
+	    }
+	  }]);
+	
+	  return Cloud;
+	}();
 	
 	module.exports = Cloud;
 
