@@ -251,9 +251,9 @@
 	
 	  this.instantiateClouds();
 	
-	  possibleClouds = [this.cloud1, this.cloud2, this.cloud3, this.cloud4];
+	  var possibleClouds = [this.cloud1, this.cloud2, this.cloud3, this.cloud4];
 	
-	  randomCloud = possibleClouds[Math.floor(Math.random() * 4)];
+	  var randomCloud = possibleClouds[Math.floor(Math.random() * 4)];
 	
 	  this.cloud = {
 	    image: randomCloud,
