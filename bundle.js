@@ -44,14 +44,16 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	const Game = __webpack_require__(1);
+	"use strict";
+	
+	var Game = __webpack_require__(1);
 	
 	document.addEventListener("DOMContentLoaded", function () {
-	  const Background = document.getElementById("background");
-	  const Pokemon = document.getElementById("pokemon");
-	  const Obstacles = document.getElementById("obstacles");
-	  const Pokeballs = document.getElementById("pokeballs");
-	  const Menu = document.getElementById("menu");
+	  var Background = document.getElementById("background");
+	  var Pokemon = document.getElementById("pokemon");
+	  var Obstacles = document.getElementById("obstacles");
+	  var Pokeballs = document.getElementById("pokeballs");
+	  var Menu = document.getElementById("menu");
 	
 	  Background.width = 800;
 	  Pokemon.width = 800;
@@ -65,21 +67,23 @@
 	  Pokeballs.height = 1000;
 	  Menu.height = 1000;
 	
-	  const newGame = new Game();
+	  var newGame = new Game();
 	});
 
 /***/ },
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	const Cloud = __webpack_require__(2);
-	const Pokemon = __webpack_require__(3);
-	const Pokeball = __webpack_require__(4);
-	const Building = __webpack_require__(5);
-	const Balloon = __webpack_require__(6);
-	const Menu = __webpack_require__(7);
+	"use strict";
 	
-	const Game = function () {
+	var Cloud = __webpack_require__(2);
+	var Pokemon = __webpack_require__(3);
+	var Pokeball = __webpack_require__(4);
+	var Building = __webpack_require__(5);
+	var Balloon = __webpack_require__(6);
+	var Menu = __webpack_require__(7);
+	
+	var Game = function Game() {
 	  this.pokeballs = [];
 	  this.buildings = [];
 	  this.balloons = [];
@@ -94,14 +98,14 @@
 	};
 	
 	Game.prototype = {
-	  startScreen: function () {
+	  startScreen: function startScreen() {
 	    this.fn = this.startGame.bind(this);
 	    document.addEventListener("keyup", this.fn, false);
 	    this.menu = new Menu(false, 0);
 	    window.setInterval(this.generateClouds.bind(this), 5000);
 	  },
 	
-	  startGame: function (e) {
+	  startGame: function startGame(e) {
 	    if (e.keyCode === 13 && this.gameOver) {
 	      document.removeEventListener("keyup", this.fn, false);
 	      this.gameOver = false;
@@ -111,7 +115,7 @@
 	      this.buildings = [];
 	      this.balloons = [];
 	
-	      const startingPosition = { x: 80, y: 290 };
+	      var startingPosition = { x: 80, y: 290 };
 	      this.pokemon = new Pokemon(startingPosition, this);
 	
 	      this.menu.started = true;
@@ -125,14 +129,14 @@
 	    }
 	  },
 	
-	  over: function () {
+	  over: function over() {
 	    this.checkCollision(this.pokeballs, "pokeball");
 	    this.checkCollision(this.buildings, "building");
 	    this.checkCollision(this.balloons, "balloon");
 	    return this.gameOver;
 	  },
 	
-	  checkCollision: function (array, type) {
+	  checkCollision: function checkCollision(array, type) {
 	    array.forEach(function (item) {
 	      if (item.position.x <= -500) {
 	        array.splice(array.indexOf(item), 1);
@@ -144,10 +148,10 @@
 	    }.bind(this));
 	  },
 	
-	  isBetween: function (type, itemX, itemY, item) {
-	    let width;
-	    let height;
-	    let hitPokemon = false;
+	  isBetween: function isBetween(type, itemX, itemY, item) {
+	    var width = void 0;
+	    var height = void 0;
+	    var hitPokemon = false;
 	
 	    if (type === "pokeball") {
 	      hitPokemon = this.checkPokeBalls(itemX, itemY);
@@ -167,64 +171,64 @@
 	    }
 	  },
 	
-	  checkBalloons: function (xPos, yPos) {
+	  checkBalloons: function checkBalloons(xPos, yPos) {
 	    if (this.checkHitBoxes(xPos, yPos - 172, 323, 233) || this.checkHitBoxes(xPos + 90, yPos + 55, 121, 167)) {
 	      return true;
 	    }
 	    return false;
 	  },
 	
-	  checkBuildings: function (xPos, yPos) {
+	  checkBuildings: function checkBuildings(xPos, yPos) {
 	    if (this.checkHitBoxes(xPos + 15, yPos + 130, 377, 274) || this.checkHitBoxes(xPos + 30, yPos + 70, 251, 61) || this.checkHitBoxes(xPos + 100, yPos + 20, 50, 50)) {
 	      return true;
 	    }
 	  },
 	
-	  checkPokeBalls: function (xPos, yPos) {
+	  checkPokeBalls: function checkPokeBalls(xPos, yPos) {
 	    if (this.checkHitBoxes(xPos, yPos, 22, 22)) {
 	      return true;
 	    }
 	    return false;
 	  },
 	
-	  checkHitBoxes: function (itemX, itemY, width, height) {
+	  checkHitBoxes: function checkHitBoxes(itemX, itemY, width, height) {
 	    if (!(this.pokemon.position.x > itemX + width || this.pokemon.position.x + this.pokemon.width < itemX || this.pokemon.position.y > itemY + height || this.pokemon.position.y + this.pokemon.height < itemY)) {
 	      return true;
 	    }
 	  },
 	
-	  overScreen: function () {
+	  overScreen: function overScreen() {
 	    this.menu.gameIsOverBuddy();
 	    window.clearInterval(this.addBall);
 	    window.clearInterval(this.addBuilding);
 	    window.addEventListener("keyup", this.fn, false);
 	  },
 	
-	  randomY: function () {
+	  randomY: function randomY() {
 	    return 550 * Math.random();
 	  },
 	
-	  chooseRandomY: function () {
-	    const randomIndex = [0, 1, 2, 3];
+	  chooseRandomY: function chooseRandomY() {
+	    var randomIndex = [0, 1, 2, 3];
 	    return randomIndex[Math.floor(Math.random() * randomIndex.length)];
 	  },
 	
-	  generateClouds: function () {
-	    const position = { x: 800, y: this.randomY() };
+	  generateClouds: function generateClouds() {
+	    var position = { x: 800, y: this.randomY() };
 	    new Cloud(position, this);
 	  },
 	
-	  addPokeBalls: function () {
-	    const position = { x: 800, y: this.randomY() };
+	  addPokeBalls: function addPokeBalls() {
+	    var position = { x: 800, y: this.randomY() };
 	    this.pokeballs.push(new Pokeball(position, this));
 	  },
 	
-	  addMoreObstacles: function () {
-	    const balloonYs = [0, -50, -100, -150];
-	    const buildingYs = [600, 550, 500, 450];
-	    const randomIndex = this.chooseRandomY();
-	    const balloonPosition = { x: 800, y: balloonYs[randomIndex] };
-	    const buildingPosition = { x: 800, y: buildingYs[randomIndex] };
+	  addMoreObstacles: function addMoreObstacles() {
+	    var balloonYs = [0, -50, -100, -150];
+	    var buildingYs = [600, 550, 500, 450];
+	    var randomIndex = this.chooseRandomY();
+	    var balloonPosition = { x: 800, y: balloonYs[randomIndex] };
+	    var buildingPosition = { x: 800, y: buildingYs[randomIndex] };
 	    this.balloons.push(new Balloon(balloonPosition, this));
 	    this.buildings.push(new Building(buildingPosition, this));
 	  }
@@ -236,7 +240,9 @@
 /* 2 */
 /***/ function(module, exports) {
 
-	const Cloud = function (position, game) {
+	"use strict";
+	
+	var Cloud = function Cloud(position, game) {
 	  this.position = position;
 	  this.game = game;
 	  this.canvas = document.getElementsByTagName("canvas")[0];
@@ -260,7 +266,7 @@
 	
 	Cloud.prototype = {
 	
-	  instantiateClouds: function () {
+	  instantiateClouds: function instantiateClouds() {
 	    this.cloud1 = new Image();
 	    this.cloud1.src = "./images/cloud1.png";
 	    this.cloud1.height = 200;
@@ -282,7 +288,7 @@
 	    this.cloud4.width = 240;
 	  },
 	
-	  slowlyDrifting: function () {
+	  slowlyDrifting: function slowlyDrifting() {
 	    this.position.x -= this.velocity;
 	
 	    if (this.position.x >= -300) {
@@ -290,12 +296,12 @@
 	    }
 	  },
 	
-	  drawImg: function (x, y, width, height) {
+	  drawImg: function drawImg(x, y, width, height) {
 	    this.context.clearRect(x, y, width, height);
 	    this.context.drawImage(this.cloud.image, x, y);
 	  },
 	
-	  render: function () {
+	  render: function render() {
 	    var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
 	
 	    this.slowlyDrifting();
@@ -310,7 +316,9 @@
 /* 3 */
 /***/ function(module, exports) {
 
-	const Pokemon = function (position, game) {
+	"use strict";
+	
+	var Pokemon = function Pokemon(position, game) {
 	  this.position = position;
 	  this.game = game;
 	  this.width = 88;
@@ -333,8 +341,8 @@
 	
 	Pokemon.prototype = {
 	
-	  makeUpSprite: function () {
-	    const pkmnSpriteUp = new Image();
+	  makeUpSprite: function makeUpSprite() {
+	    var pkmnSpriteUp = new Image();
 	    pkmnSpriteUp.src = "./images/bflyup.png";
 	
 	    this.spriteUp = {
@@ -342,8 +350,8 @@
 	    };
 	  },
 	
-	  makeDownSprite: function () {
-	    const pkmnSpriteDown = new Image();
+	  makeDownSprite: function makeDownSprite() {
+	    var pkmnSpriteDown = new Image();
 	    pkmnSpriteDown.src = "./images/bflydown.png";
 	
 	    this.spriteDown = {
@@ -351,12 +359,12 @@
 	    };
 	  },
 	
-	  addKeyListener: function () {
+	  addKeyListener: function addKeyListener() {
 	    this.fn = this.flyPokemonFly.bind(this);
 	    document.addEventListener("keyup", this.fn, false);
 	  },
 	
-	  flyPokemonFly: function (e) {
+	  flyPokemonFly: function flyPokemonFly(e) {
 	    if (this.game.over()) {
 	      window.clearInterval(this.spriteInterval);
 	      this.context.clearRect(this.position.x, this.position.y, 800, 1000);
@@ -373,7 +381,7 @@
 	    }
 	  },
 	
-	  justGravity: function () {
+	  justGravity: function justGravity() {
 	    this.time++;
 	    this.velocity += this.gravity;
 	    this.context.clearRect(this.position.x, this.position.y, 800, 1000);
@@ -385,7 +393,7 @@
 	    }
 	  },
 	
-	  startFlapping: function () {
+	  startFlapping: function startFlapping() {
 	
 	    this.gravityTime = 0;
 	    while (this.upTime < 25) {
@@ -398,12 +406,12 @@
 	    this.upTime = 0;
 	  },
 	
-	  drawImg: function (image, x, y) {
+	  drawImg: function drawImg(image, x, y) {
 	    this.context.clearRect(x, y, 800, 1000);
 	    this.context.drawImage(image, x, y);
 	  },
 	
-	  render: function () {
+	  render: function render() {
 	    this.spriteInterval = window.setInterval(this.flyPokemonFly.bind(this), 17);
 	  }
 	
@@ -415,11 +423,13 @@
 /* 4 */
 /***/ function(module, exports) {
 
-	const Pokeball = function (position, game) {
+	"use strict";
+	
+	var Pokeball = function Pokeball(position, game) {
 	  this.position = position;
 	  this.game = game;
 	
-	  const ball = new Image();
+	  var ball = new Image();
 	  ball.src = "./images/ball.png";
 	
 	  this.ball = {
@@ -438,7 +448,7 @@
 	
 	Pokeball.prototype = {
 	
-	  constantBombardment: function () {
+	  constantBombardment: function constantBombardment() {
 	    this.time++;
 	
 	    this.context.clearRect(this.position.x, this.position.y, 22, 22);
@@ -450,12 +460,12 @@
 	    }
 	  },
 	
-	  drawImg: function (x, y) {
+	  drawImg: function drawImg(x, y) {
 	    this.context.clearRect(x, y, 22, 22);
 	    this.context.drawImage(this.ball.image, x, y);
 	  },
 	
-	  render: function () {
+	  render: function render() {
 	    var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
 	
 	    this.constantBombardment();
@@ -470,13 +480,15 @@
 /* 5 */
 /***/ function(module, exports) {
 
-	const Building = function (position, game) {
+	"use strict";
+	
+	var Building = function Building(position, game) {
 	  this.position = position;
 	  this.game = game;
 	
 	  this.constantVelocity = 5;
 	
-	  const building = new Image();
+	  var building = new Image();
 	  building.src = "./images/building.png";
 	
 	  this.building = {
@@ -491,7 +503,7 @@
 	
 	Building.prototype = {
 	
-	  goBuildingGo: function () {
+	  goBuildingGo: function goBuildingGo() {
 	
 	    this.context.clearRect(this.position.x, this.position.y, 402, 548);
 	    this.position.x -= this.constantVelocity;
@@ -503,12 +515,12 @@
 	    }
 	  },
 	
-	  drawImg: function (x, y) {
+	  drawImg: function drawImg(x, y) {
 	    this.context.clearRect(x, y, 402, 548);
 	    this.context.drawImage(this.building.image, x, y);
 	  },
 	
-	  render: function () {
+	  render: function render() {
 	    this.buildingInterval = window.setInterval(this.goBuildingGo.bind(this), 17);
 	  }
 	
@@ -520,13 +532,15 @@
 /* 6 */
 /***/ function(module, exports) {
 
-	const Balloon = function (position, game) {
+	"use strict";
+	
+	var Balloon = function Balloon(position, game) {
 	  this.position = position;
 	  this.game = game;
 	
 	  this.constantVelocity = 5;
 	
-	  const balloon = new Image();
+	  var balloon = new Image();
 	  balloon.src = "./images/balloon.png";
 	
 	  this.balloon = {
@@ -541,7 +555,7 @@
 	
 	Balloon.prototype = {
 	
-	  goBalloonGo: function () {
+	  goBalloonGo: function goBalloonGo() {
 	    this.context.clearRect(this.position.x, this.position.y, 340, 234);
 	    this.position.x -= this.constantVelocity;
 	
@@ -554,12 +568,12 @@
 	    }
 	  },
 	
-	  drawImg: function (x, y) {
+	  drawImg: function drawImg(x, y) {
 	    this.context.clearRect(x, y, 340, 234);
 	    this.context.drawImage(this.balloon.image, x, y);
 	  },
 	
-	  render: function () {
+	  render: function render() {
 	    this.balloonInterval = window.setInterval(this.goBalloonGo.bind(this), 17);
 	  }
 	
@@ -571,7 +585,9 @@
 /* 7 */
 /***/ function(module, exports) {
 
-	const Menu = function (started, currentScore) {
+	"use strict";
+	
+	var Menu = function Menu(started, currentScore) {
 	  this.started = started;
 	  this.currentScore = currentScore;
 	
@@ -583,9 +599,9 @@
 	
 	Menu.prototype = {
 	
-	  gameIsOverBuddy: function () {
+	  gameIsOverBuddy: function gameIsOverBuddy() {
 	    this.context.clearRect(0, 0, 800, 1000);
-	    const over = new Image();
+	    var over = new Image();
 	    over.src = "./images/gameOver.png";
 	    over.onload = function () {
 	      this.context.drawImage(over, 260, 300);
@@ -593,8 +609,8 @@
 	    }.bind(this);
 	  },
 	
-	  revealScore: function () {
-	    let whichImage = new Image();
+	  revealScore: function revealScore() {
+	    var whichImage = new Image();
 	
 	    if (this.currentScore <= 6) {
 	      whichImage.src = "./images/bronze.png";
@@ -615,7 +631,7 @@
 	    }.bind(this);
 	  },
 	
-	  startScoring: function () {
+	  startScoring: function startScoring() {
 	
 	    this.context.clearRect(0, 0, 800, 1000);
 	
@@ -631,10 +647,10 @@
 	    this.context.stroke();
 	  },
 	
-	  render: function () {
-	    const startButton = new Image();
-	    const instructions = new Image();
-	    const logo = new Image();
+	  render: function render() {
+	    var startButton = new Image();
+	    var instructions = new Image();
+	    var logo = new Image();
 	    startButton.src = "./images/startButton.png";
 	    instructions.src = "./images/instructions.png";
 	    logo.src = "./images/logo.png";
