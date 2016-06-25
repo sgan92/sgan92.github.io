@@ -46,7 +46,7 @@
 
 	const Game = __webpack_require__(1);
 	
-	document.addEventListener("DOMContentLoaded", f => {
+	document.addEventListener("DOMContentLoaded", function () {
 	  const Background = document.getElementById("background");
 	  const Pokemon = document.getElementById("pokemon");
 	  const Obstacles = document.getElementById("obstacles");
