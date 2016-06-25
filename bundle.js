@@ -121,7 +121,7 @@
 	      this.addMoreObstacles();
 	
 	      this.addBall = window.setInterval(this.addPokeBalls.bind(this), 4567);
-	      this.addBuilding = window.setInterval(this.addMoreObstacles.bind(this), 6000);
+	      this.addBuilding = window.setInterval(this.addMoreObstacles.bind(this), 5000);
 	    }
 	  },
 	
@@ -204,6 +204,11 @@
 	    return 550 * Math.random();
 	  },
 	
+	  chooseRandomY: function () {
+	    const randomIndex = [0, 1, 2, 3];
+	    return randomIndex[Math.floor(Math.random() * randomIndex.length)];
+	  },
+	
 	  generateClouds: function () {
 	    const position = { x: 800, y: this.randomY() };
 	    new Cloud(position, this);
@@ -215,8 +220,11 @@
 	  },
 	
 	  addMoreObstacles: function () {
-	    const balloonPosition = { x: 800, y: 0 };
-	    const buildingPosition = { x: 800, y: 600 };
+	    const balloonYs = [0, -40, -80, -120];
+	    const buildingYs = [600, 540, 500, 460];
+	    const randomIndex = this.chooseRandomY();
+	    const balloonPosition = { x: 800, y: balloonYs[randomIndex] };
+	    const buildingPosition = { x: 800, y: buildingYs[randomIndex] };
 	    this.balloons.push(new Balloon(balloonPosition, this));
 	    this.buildings.push(new Building(buildingPosition, this));
 	  }
@@ -276,12 +284,10 @@
 	
 	  slowlyDrifting: function () {
 	    this.position.x -= this.velocity;
+	
 	    if (this.position.x >= -300) {
 	      this.drawImg(this.position.x, this.position.y, this.cloud.width, this.cloud.height);
 	    }
-	    // else {
-	    //   window.clearInterval(this.cloudInterval);
-	    // }
 	  },
 	
 	  drawImg: function (x, y, width, height) {
