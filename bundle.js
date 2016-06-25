@@ -304,10 +304,15 @@
 	      }
 	    }
 	  }, {
+	    key: "drawImg",
+	    value: function drawImg(x, y, width, height) {
+	      this.context.clearRect(x, y, width, height);
+	      this.context.drawImage(this.cloud.image, x, y);
+	    }
+	  }, {
 	    key: "render",
 	    value: function render() {
 	      var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
-	
 	      this.slowlyDrifting();
 	      requestAnimationFrame(this.render.bind(this));
 	    }
@@ -315,6 +320,8 @@
 	
 	  return Cloud;
 	}();
+	
+	;
 	
 	module.exports = Cloud;
 
