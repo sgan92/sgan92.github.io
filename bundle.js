@@ -134,10 +134,10 @@
 	
 	  checkCollision: function (array, type) {
 	    array.forEach(function (item) {
-	      if (item.position.x <= 500) {
+	      if (item.position.x <= -500) {
 	        array.splice(array.indexOf(item), 1);
 	      } else {
-	        if (this.isBetween(type, item.position.x, item.position.y, item) || this.pokemon.position.y < 100 || this.pokemon.position.y > 1200) {
+	        if (this.isBetween(type, item.position.x, item.position.y, item) || this.pokemon.position.y < -100 || this.pokemon.position.y > 1200) {
 	          this.gameOver = true;
 	        }
 	      }
@@ -278,9 +278,10 @@
 	    this.position.x -= this.velocity;
 	    if (this.position.x >= -300) {
 	      this.drawImg(this.position.x, this.position.y, this.cloud.width, this.cloud.height);
-	    } else {
-	      window.clearInterval(this.cloudInterval);
 	    }
+	    // else {
+	    //   window.clearInterval(this.cloudInterval);
+	    // }
 	  },
 	
 	  drawImg: function (x, y, width, height) {
@@ -289,7 +290,13 @@
 	  },
 	
 	  render: function () {
-	    this.cloudInterval = window.setInterval(this.slowlyDrifting.bind(this), 17);
+	    var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+	
+	    this.slowlyDrifting();
+	    requestAnimationFrame(this.render.bind(this));
+	    // this.slowlyDrifting();
+	    // window.requestAnimationFrame(this.render().bind(this))
+	    // this.cloudInterval = window.setInterval(this.slowlyDrifting.bind(this), 17);
 	  }
 	
 	};
@@ -488,9 +495,10 @@
 	
 	    if (!this.game.over() && this.position.x >= -1200) {
 	      this.drawImg(this.position.x, this.position.y);
-	    } else if (this.game.over()) {
-	      window.clearInterval(this.buildingInterval);
 	    }
+	    //  else if (this.game.over()){
+	    //    window.clearInterval(this.buildingInterval);
+	    //  }
 	  },
 	
 	  drawImg: function (x, y) {
@@ -499,7 +507,11 @@
 	  },
 	
 	  render: function () {
-	    this.buildingInterval = window.setInterval(this.goBuildingGo.bind(this), 17);
+	    var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+	
+	    this.goBuildingGo();
+	    requestAnimationFrame(this.render.bind(this));
+	    //  this.buildingInterval = window.setInterval(this.goBuildingGo.bind(this), 17);
 	  }
 	
 	};
@@ -551,7 +563,11 @@
 	
 	  render: function () {
 	
-	    this.balloonInterval = window.setInterval(this.goBalloonGo.bind(this), 17);
+	    var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+	
+	    this.goBalloonGo();
+	    requestAnimationFrame(this.render.bind(this));
+	    //  this.balloonInterval = window.setInterval(this.goBalloonGo.bind(this), 17);
 	  }
 	
 	};
