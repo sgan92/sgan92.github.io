@@ -148,15 +148,17 @@
 	  }, {
 	    key: "checkCollision",
 	    value: function checkCollision(array, type) {
+	      var _this = this;
+	
 	      array.forEach(function (item) {
 	        if (item.position.x <= -500) {
 	          array.splice(array.indexOf(item), 1);
 	        } else {
-	          if (this.isBetween(type, item.position.x, item.position.y, item) || this.pokemon.position.y < -100 || this.pokemon.position.y > 1200) {
-	            this.gameOver = true;
+	          if (_this.isBetween(type, item.position.x, item.position.y, item) || _this.pokemon.position.y < -100 || _this.pokemon.position.y > 1200) {
+	            _this.gameOver = true;
 	          }
 	        }
-	      }.bind(this));
+	      });
 	    }
 	  }, {
 	    key: "isBetween",
@@ -694,18 +696,21 @@
 	  _createClass(Menu, [{
 	    key: "gameIsOverBuddy",
 	    value: function gameIsOverBuddy() {
+	      var _this = this;
 	
 	      this.context.clearRect(0, 0, 800, 1000);
 	      var over = new Image();
 	      over.src = "./images/gameOver.png";
-	      over.onload = function () {
-	        this.context.drawImage(over, 260, 300);
-	        this.revealScore();
-	      }.bind(this);
+	      over.onload = function (f) {
+	        _this.context.drawImage(over, 260, 300);
+	        _this.revealScore();
+	      };
 	    }
 	  }, {
 	    key: "revealScore",
 	    value: function revealScore() {
+	      var _this2 = this;
+	
 	      var whichImage = new Image();
 	
 	      if (this.currentScore <= 6) {
@@ -716,15 +721,15 @@
 	        whichImage.src = "./images/gold.png";
 	      }
 	
-	      whichImage.onload = function () {
-	        this.context.drawImage(whichImage, 370, 470);
-	        this.context.lineWidth = 2;
-	        this.context.strokeStyle = "black";
+	      whichImage.onload = function (f) {
+	        _this2.context.drawImage(whichImage, 370, 470);
+	        _this2.context.lineWidth = 2;
+	        _this2.context.strokeStyle = "black";
 	
-	        this.context.font = "22px Share Tech Mono";
-	        this.context.strokeText(this.currentScore, 360, 520);
-	        this.context.stroke();
-	      }.bind(this);
+	        _this2.context.font = "22px Share Tech Mono";
+	        _this2.context.strokeText(_this2.currentScore, 360, 520);
+	        _this2.context.stroke();
+	      };
 	    }
 	  }, {
 	    key: "startScoring",
@@ -745,23 +750,25 @@
 	  }, {
 	    key: "render",
 	    value: function render() {
+	      var _this3 = this;
+	
 	      var startButton = new Image();
 	      var instructions = new Image();
 	      var logo = new Image();
 	      startButton.src = "./images/startButton.png";
 	      instructions.src = "./images/instructions.png";
 	      logo.src = "./images/logo.png";
-	      startButton.onload = function () {
-	        this.context.drawImage(startButton, 260, 400);
-	      }.bind(this);
+	      startButton.onload = function (f) {
+	        _this3.context.drawImage(startButton, 260, 400);
+	      };
 	
-	      instructions.onload = function () {
-	        this.context.drawImage(instructions, 230, 530);
-	      }.bind(this);
+	      instructions.onload = function (f) {
+	        _this3.context.drawImage(instructions, 230, 530);
+	      };
 	
-	      logo.onload = function () {
-	        this.context.drawImage(logo, 130, 180);
-	      }.bind(this);
+	      logo.onload = function (f) {
+	        _this3.context.drawImage(logo, 130, 180);
+	      };
 	    }
 	  }]);
 	

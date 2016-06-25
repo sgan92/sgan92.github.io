@@ -9,6 +9,8 @@ Multiple canvas elements are used here so that rendering of various elements can
 
 As the building of the roof is triangular, the collision boxes can not be strictly rectangular. Same can be said with Team Rocket's balloon. Therefore, both of these obstacles had to be broken down into multiple collision boxes in order to make the game more accurate.
 
+
+
 ##Future Directions
 - [ ] music
 - [ ] give butterfree a move to get rid of pokeballs
