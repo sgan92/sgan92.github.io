@@ -40,14 +40,12 @@ ul {
   font-size: 14px;
   list-style: none;
   position: relative;
-  top: 75%;
-  left: 34%;
-  float: left;
   font-family: monospace;
+  top: 30%;
 }
 
 li {
-  float: left;
+  width: 100px;
   margin-left: 20px;
   cursor: pointer;
   padding: 10px 20px;
