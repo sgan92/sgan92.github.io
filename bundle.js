@@ -630,9 +630,15 @@
 	    instructions.src = "./images/instructions.png";
 	    logo.src = "./images/logo.png";
 	    startButton.onload = function () {
-	      this.context.drawImage(logo, 130, 180);
 	      this.context.drawImage(startButton, 260, 400);
+	    }.bind(this);
+	
+	    instructions.onload = function () {
 	      this.context.drawImage(instructions, 230, 530);
+	    }.bind(this);
+	
+	    logo.onload = function () {
+	      this.context.drawImage(logo, 130, 180);
 	    }.bind(this);
 	  }
 	};
