@@ -109,16 +109,16 @@
 	    value: function startScreen() {
 	      this.fn = this.startGame.bind(this);
 	      document.addEventListener("keyup", this.fn, false);
-	      this.menu = new Menu(false, 0);
+	      this.menu = new Menu(false, 0, this);
 	      window.setInterval(this.generateClouds.bind(this), 5000);
 	    }
 	  }, {
 	    key: "startGame",
 	    value: function startGame(e) {
 	      if (e.keyCode === 13 && this.gameOver) {
+	        this.context.clearRect(0, 0, 800, 1000);
 	        document.removeEventListener("keyup", this.fn, false);
 	        this.gameOver = false;
-	        this.context.clearRect(0, 0, 800, 1000);
 	
 	        this.pokeballs = [];
 	        this.buildings = [];
@@ -415,12 +415,7 @@
 	  }, {
 	    key: "flyPokemonFly",
 	    value: function flyPokemonFly(e) {
-	      if (this.game.over()) {
-	        window.clearInterval(this.spriteInterval);
-	        this.context.clearRect(this.position.x, this.position.y, 800, 1000);
-	        document.removeEventListener("keyup", this.fn);
-	        this.game.overScreen();
-	      } else if (e && e.keyCode === 87) {
+	      if (e && e.keyCode === 87) {
 	        this.time = 0;
 	        this.velocity = this.fly;
 	        this.context.clearRect(this.position.x, this.position.y, 800, 1000);
@@ -466,7 +461,16 @@
 	  }, {
 	    key: "render",
 	    value: function render() {
-	      this.spriteInterval = window.setInterval(this.flyPokemonFly.bind(this), 17);
+	      var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+	
+	      this.flyPokemonFly();
+	      this.animation = requestAnimationFrame(this.render.bind(this));
+	      if (this.game.over()) {
+	        window.cancelAnimationFrame(this.animation);
+	        this.context.clearRect(this.position.x, this.position.y, 800, 1000);
+	        document.removeEventListener("keyup", this.fn);
+	        this.game.overScreen();
+	      }
 	    }
 	  }]);
 	
@@ -583,8 +587,6 @@
 	
 	      if (!this.game.over() && this.position.x >= -1200) {
 	        this.drawImg(this.position.x, this.position.y);
-	      } else if (this.game.over()) {
-	        window.clearInterval(this.buildingInterval);
 	      }
 	    }
 	  }, {
@@ -596,7 +598,14 @@
 	  }, {
 	    key: "render",
 	    value: function render() {
-	      this.buildingInterval = window.setInterval(this.goBuildingGo.bind(this), 17);
+	      var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+	
+	      this.goBuildingGo();
+	      this.animation = requestAnimationFrame(this.render.bind(this));
+	      if (this.game.over()) {
+	        window.cancelAnimationFrame(this.animation);
+	        this.game.overScreen();
+	      }
 	    }
 	  }]);
 	
@@ -645,10 +654,6 @@
 	
 	      if (!this.game.over() && this.position.x >= -400) {
 	        this.drawImg(this.position.x, this.position.y);
-	      } else if (this.game.over()) {
-	        this.game.overScreen();
-	        window.clearInterval(this.balloonInterval);
-	        this.context.clearRect(0, 0, 800, 1000);
 	      }
 	    }
 	  }, {
@@ -660,7 +665,15 @@
 	  }, {
 	    key: "render",
 	    value: function render() {
-	      this.balloonInterval = window.setInterval(this.goBalloonGo.bind(this), 17);
+	      var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+	
+	      this.goBalloonGo();
+	      this.animation = requestAnimationFrame(this.render.bind(this));
+	      if (this.game.over()) {
+	        window.cancelAnimationFrame(this.animation);
+	        this.game.overScreen();
+	        this.context.clearRect(0, 0, 800, 1000);
+	      }
 	    }
 	  }]);
 	
@@ -682,10 +695,12 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	var Menu = function () {
-	  function Menu(started, currentScore) {
+	  function Menu(started, currentScore, game) {
 	    _classCallCheck(this, Menu);
 	
 	    this.started = started;
+	    this.game = game;
+	    this.bestScore = 0;
 	    this.currentScore = currentScore;
 	    this.canvas = document.getElementById("menu");
 	    this.context = this.canvas.getContext("2d");
@@ -711,6 +726,8 @@
 	    value: function revealScore() {
 	      var _this2 = this;
 	
+	      this.isBestScore();
+	
 	      var whichImage = new Image();
 	
 	      if (this.currentScore <= 6) {
@@ -729,7 +746,26 @@
 	        _this2.context.font = "22px Share Tech Mono";
 	        _this2.context.strokeText(_this2.currentScore, 360, 520);
 	        _this2.context.stroke();
+	
+	        _this2.revealBestScore();
 	      };
+	    }
+	  }, {
+	    key: "isBestScore",
+	    value: function isBestScore() {
+	      if (this.bestScore < this.currentScore) {
+	        this.bestScore = this.currentScore;
+	      }
+	    }
+	  }, {
+	    key: "revealBestScore",
+	    value: function revealBestScore() {
+	      this.context.lineWidth = 2;
+	      this.context.strokeStyle = "black";
+	
+	      this.context.font = "22 Share Tech Mono";
+	      this.context.strokeText("Your highest score is " + this.bestScore, 260, 610);
+	      this.context.stroke();
 	    }
 	  }, {
 	    key: "startScoring",
@@ -741,8 +777,8 @@
 	      this.context.strokeStyle = "black";
 	
 	      this.context.font = "120px Share Tech Mono";
-	      this.context.fillText(this.currentScore, 390, 200);
-	      this.context.strokeText(this.currentScore, 390, 200);
+	      this.context.fillText(this.currentScore, 360, 200);
+	      this.context.strokeText(this.currentScore, 360, 200);
 	
 	      this.context.fill();
 	      this.context.stroke();
