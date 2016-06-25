@@ -534,50 +534,63 @@
 
 	"use strict";
 	
-	var Balloon = function Balloon(position, game) {
-	  this.position = position;
-	  this.game = game;
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	  this.constantVelocity = 5;
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
-	  var balloon = new Image();
-	  balloon.src = "./images/balloon.png";
+	var Balloon = function () {
+	  function Balloon(position, game) {
+	    _classCallCheck(this, Balloon);
 	
-	  this.balloon = {
-	    image: balloon
-	  };
+	    this.position = position;
+	    this.game = game;
 	
-	  this.canvas = document.getElementById("obstacles");
-	  this.context = this.canvas.getContext("2d");
+	    this.constantVelocity = 5;
 	
-	  this.render();
-	};
+	    var balloon = new Image();
+	    balloon.src = "./images/balloon.png";
 	
-	Balloon.prototype = {
+	    this.balloon = {
+	      image: balloon
+	    };
 	
-	  goBalloonGo: function goBalloonGo() {
-	    this.context.clearRect(this.position.x, this.position.y, 340, 234);
-	    this.position.x -= this.constantVelocity;
+	    this.canvas = document.getElementById("obstacles");
+	    this.context = this.canvas.getContext("2d");
 	
-	    if (!this.game.over() && this.position.x >= -400) {
-	      this.drawImg(this.position.x, this.position.y);
-	    } else if (this.game.over()) {
-	      this.game.overScreen();
-	      window.clearInterval(this.balloonInterval);
-	      this.context.clearRect(0, 0, 800, 1000);
-	    }
-	  },
-	
-	  drawImg: function drawImg(x, y) {
-	    this.context.clearRect(x, y, 340, 234);
-	    this.context.drawImage(this.balloon.image, x, y);
-	  },
-	
-	  render: function render() {
-	    this.balloonInterval = window.setInterval(this.goBalloonGo.bind(this), 17);
+	    this.render();
 	  }
 	
-	};
+	  _createClass(Balloon, [{
+	    key: "goBalloonGo",
+	    value: function goBalloonGo() {
+	      this.context.clearRect(this.position.x, this.position.y, 340, 234);
+	      this.position.x -= this.constantVelocity;
+	
+	      if (!this.game.over() && this.position.x >= -400) {
+	        this.drawImg(this.position.x, this.position.y);
+	      } else if (this.game.over()) {
+	        this.game.overScreen();
+	        window.clearInterval(this.balloonInterval);
+	        this.context.clearRect(0, 0, 800, 1000);
+	      }
+	    }
+	  }, {
+	    key: "drawImg",
+	    value: function drawImg(x, y) {
+	      this.context.clearRect(x, y, 340, 234);
+	      this.context.drawImage(this.balloon.image, x, y);
+	    }
+	  }, {
+	    key: "render",
+	    value: function render() {
+	      this.balloonInterval = window.setInterval(this.goBalloonGo.bind(this), 17);
+	    }
+	  }]);
+	
+	  return Balloon;
+	}();
+	
+	;
 	
 	module.exports = Balloon;
 
