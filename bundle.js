@@ -48,7 +48,7 @@
 	
 	var Game = __webpack_require__(1);
 	
-	document.addEventListener("DOMContentLoaded", function () {
+	document.addEventListener("DOMContentLoaded", function (f) {
 	  var Background = document.getElementById("background");
 	  var Pokemon = document.getElementById("pokemon");
 	  var Obstacles = document.getElementById("obstacles");
@@ -356,104 +356,120 @@
 
 	"use strict";
 	
-	var Pokemon = function Pokemon(position, game) {
-	  this.position = position;
-	  this.game = game;
-	  this.width = 88;
-	  this.height = 88;
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	  this.gravity = 0.4;
-	  this.velocity = 0;
-	  this.time = 0;
-	  this.fly = -15;
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
-	  this.makeUpSprite();
-	  this.makeDownSprite();
+	var Pokemon = function () {
+	  function Pokemon(position, game) {
+	    _classCallCheck(this, Pokemon);
 	
-	  this.canvas = document.getElementById("pokemon");
-	  this.context = this.canvas.getContext("2d");
+	    this.position = position;
+	    this.game = game;
+	    this.width = 88;
+	    this.height = 88;
 	
-	  this.addKeyListener();
-	  this.render();
-	};
+	    this.gravity = 0.4;
+	    this.velocity = 0;
+	    this.time = 0;
+	    this.fly = -15;
 	
-	Pokemon.prototype = {
+	    this.makeUpSprite();
+	    this.makeDownSprite();
 	
-	  makeUpSprite: function makeUpSprite() {
-	    var pkmnSpriteUp = new Image();
-	    pkmnSpriteUp.src = "./images/bflyup.png";
+	    this.canvas = document.getElementById("pokemon");
+	    this.context = this.canvas.getContext("2d");
 	
-	    this.spriteUp = {
-	      image: pkmnSpriteUp
-	    };
-	  },
-	
-	  makeDownSprite: function makeDownSprite() {
-	    var pkmnSpriteDown = new Image();
-	    pkmnSpriteDown.src = "./images/bflydown.png";
-	
-	    this.spriteDown = {
-	      image: pkmnSpriteDown
-	    };
-	  },
-	
-	  addKeyListener: function addKeyListener() {
-	    this.fn = this.flyPokemonFly.bind(this);
-	    document.addEventListener("keyup", this.fn, false);
-	  },
-	
-	  flyPokemonFly: function flyPokemonFly(e) {
-	    if (this.game.over()) {
-	      window.clearInterval(this.spriteInterval);
-	      this.context.clearRect(this.position.x, this.position.y, 800, 1000);
-	      document.removeEventListener("keyup", this.fn);
-	      this.game.overScreen();
-	    } else if (e && e.keyCode === 87) {
-	      this.time = 0;
-	      this.velocity = this.fly;
-	      this.context.clearRect(this.position.x, this.position.y, 800, 1000);
-	      this.position.y -= this.velocity;
-	      this.drawImg(this.spriteUp.image, this.position.x, this.position.y);
-	    } else {
-	      this.justGravity();
-	    }
-	  },
-	
-	  justGravity: function justGravity() {
-	    this.time++;
-	    this.velocity += this.gravity;
-	    this.context.clearRect(this.position.x, this.position.y, 800, 1000);
-	    this.position.y += this.velocity;
-	    if (this.time <= 15 && !this.game.over()) {
-	      this.drawImg(this.spriteUp.image, this.position.x, this.position.y);
-	    } else if (!this.game.over()) {
-	      this.drawImg(this.spriteDown.image, this.position.x, this.position.y);
-	    }
-	  },
-	
-	  startFlapping: function startFlapping() {
-	
-	    this.gravityTime = 0;
-	    while (this.upTime < 25) {
-	      this.position.x += 0.2;
-	      this.context.clearRect(this.position.x, this.position.y, 800, 1000);
-	      this.position.y -= this.gravity * this.upTime;
-	      this.drawImg(this.spriteUp.image, this.position.x, this.position.y);
-	      this.upTime += 1.25;
-	    }
-	    this.upTime = 0;
-	  },
-	
-	  drawImg: function drawImg(image, x, y) {
-	    this.context.clearRect(x, y, 800, 1000);
-	    this.context.drawImage(image, x, y);
-	  },
-	
-	  render: function render() {
-	    this.spriteInterval = window.setInterval(this.flyPokemonFly.bind(this), 17);
+	    this.addKeyListener();
+	    this.render();
 	  }
 	
-	};
+	  _createClass(Pokemon, [{
+	    key: "makeUpSprite",
+	    value: function makeUpSprite() {
+	      var pkmnSpriteUp = new Image();
+	      pkmnSpriteUp.src = "./images/bflyup.png";
+	
+	      this.spriteUp = {
+	        image: pkmnSpriteUp
+	      };
+	    }
+	  }, {
+	    key: "makeDownSprite",
+	    value: function makeDownSprite() {
+	      var pkmnSpriteDown = new Image();
+	      pkmnSpriteDown.src = "./images/bflydown.png";
+	
+	      this.spriteDown = {
+	        image: pkmnSpriteDown
+	      };
+	    }
+	  }, {
+	    key: "addKeyListener",
+	    value: function addKeyListener() {
+	      this.fn = this.flyPokemonFly.bind(this);
+	      document.addEventListener("keyup", this.fn, false);
+	    }
+	  }, {
+	    key: "flyPokemonFly",
+	    value: function flyPokemonFly(e) {
+	      if (this.game.over()) {
+	        window.clearInterval(this.spriteInterval);
+	        this.context.clearRect(this.position.x, this.position.y, 800, 1000);
+	        document.removeEventListener("keyup", this.fn);
+	        this.game.overScreen();
+	      } else if (e && e.keyCode === 87) {
+	        this.time = 0;
+	        this.velocity = this.fly;
+	        this.context.clearRect(this.position.x, this.position.y, 800, 1000);
+	        this.position.y -= this.velocity;
+	        this.drawImg(this.spriteUp.image, this.position.x, this.position.y);
+	      } else {
+	        this.justGravity();
+	      }
+	    }
+	  }, {
+	    key: "justGravity",
+	    value: function justGravity() {
+	      this.time++;
+	      this.velocity += this.gravity;
+	      this.context.clearRect(this.position.x, this.position.y, 800, 1000);
+	      this.position.y += this.velocity;
+	      if (this.time <= 15 && !this.game.over()) {
+	        this.drawImg(this.spriteUp.image, this.position.x, this.position.y);
+	      } else if (!this.game.over()) {
+	        this.drawImg(this.spriteDown.image, this.position.x, this.position.y);
+	      }
+	    }
+	  }, {
+	    key: "startFlapping",
+	    value: function startFlapping() {
+	
+	      this.gravityTime = 0;
+	      while (this.upTime < 25) {
+	        this.position.x += 0.2;
+	        this.context.clearRect(this.position.x, this.position.y, 800, 1000);
+	        this.position.y -= this.gravity * this.upTime;
+	        this.drawImg(this.spriteUp.image, this.position.x, this.position.y);
+	        this.upTime += 1.25;
+	      }
+	      this.upTime = 0;
+	    }
+	  }, {
+	    key: "drawImg",
+	    value: function drawImg(image, x, y) {
+	      this.context.clearRect(x, y, 800, 1000);
+	      this.context.drawImage(image, x, y);
+	    }
+	  }, {
+	    key: "render",
+	    value: function render() {
+	      this.spriteInterval = window.setInterval(this.flyPokemonFly.bind(this), 17);
+	    }
+	  }]);
+	
+	  return Pokemon;
+	}();
 	
 	module.exports = Pokemon;
 
@@ -463,54 +479,65 @@
 
 	"use strict";
 	
-	var Pokeball = function Pokeball(position, game) {
-	  this.position = position;
-	  this.game = game;
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	  var ball = new Image();
-	  ball.src = "./images/ball.png";
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
-	  this.ball = {
-	    image: ball
-	  };
+	var Pokeball = function () {
+	  function Pokeball(position, game) {
+	    _classCallCheck(this, Pokeball);
 	
-	  this.canvas = document.getElementById("pokeballs");
-	  this.context = this.canvas.getContext("2d");
+	    this.position = position;
+	    this.game = game;
 	
-	  this.constantVelocity = 14;
-	  this.ballGravity = 0.2;
-	  this.time = 0;
+	    var ball = new Image();
+	    ball.src = "./images/ball.png";
 	
-	  this.render();
-	};
+	    this.ball = {
+	      image: ball
+	    };
 	
-	Pokeball.prototype = {
+	    this.canvas = document.getElementById("pokeballs");
+	    this.context = this.canvas.getContext("2d");
 	
-	  constantBombardment: function constantBombardment() {
-	    this.time++;
+	    this.constantVelocity = 14;
+	    this.ballGravity = 0.2;
+	    this.time = 0;
 	
-	    this.context.clearRect(this.position.x, this.position.y, 22, 22);
-	    this.position.x -= this.constantVelocity;
-	    this.position.y += this.time * this.ballGravity;
-	
-	    if (!this.game.over() && (this.position.x >= -100 || this.position.y <= 1000)) {
-	      this.drawImg(this.position.x, this.position.y);
-	    }
-	  },
-	
-	  drawImg: function drawImg(x, y) {
-	    this.context.clearRect(x, y, 22, 22);
-	    this.context.drawImage(this.ball.image, x, y);
-	  },
-	
-	  render: function render() {
-	    var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
-	
-	    this.constantBombardment();
-	    requestAnimationFrame(this.render.bind(this));
+	    this.render();
 	  }
 	
-	};
+	  _createClass(Pokeball, [{
+	    key: "constantBombardment",
+	    value: function constantBombardment() {
+	      this.time++;
+	
+	      this.context.clearRect(this.position.x, this.position.y, 22, 22);
+	      this.position.x -= this.constantVelocity;
+	      this.position.y += this.time * this.ballGravity;
+	
+	      if (!this.game.over() && (this.position.x >= -100 || this.position.y <= 1000)) {
+	        this.drawImg(this.position.x, this.position.y);
+	      }
+	    }
+	  }, {
+	    key: "drawImg",
+	    value: function drawImg(x, y) {
+	      this.context.clearRect(x, y, 22, 22);
+	      this.context.drawImage(this.ball.image, x, y);
+	    }
+	  }, {
+	    key: "render",
+	    value: function render() {
+	      var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+	
+	      this.constantBombardment();
+	      requestAnimationFrame(this.render.bind(this));
+	    }
+	  }]);
+	
+	  return Pokeball;
+	}();
 	
 	module.exports = Pokeball;
 
