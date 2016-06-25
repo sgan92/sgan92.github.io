@@ -168,7 +168,7 @@
 	  },
 	
 	  checkBalloons: function (xPos, yPos) {
-	    if (this.checkHitBoxes(xPos, yPos172, 323, 233) || this.checkHitBoxes(xPos + 90, yPos + 55, 121, 167)) {
+	    if (this.checkHitBoxes(xPos, yPos - 172, 323, 233) || this.checkHitBoxes(xPos + 90, yPos + 55, 121, 167)) {
 	      return true;
 	    }
 	    return false;
