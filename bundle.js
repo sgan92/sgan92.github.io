@@ -294,9 +294,6 @@
 	
 	    this.slowlyDrifting();
 	    requestAnimationFrame(this.render.bind(this));
-	    // this.slowlyDrifting();
-	    // window.requestAnimationFrame(this.render().bind(this))
-	    // this.cloudInterval = window.setInterval(this.slowlyDrifting.bind(this), 17);
 	  }
 	
 	};
@@ -495,10 +492,9 @@
 	
 	    if (!this.game.over() && this.position.x >= -1200) {
 	      this.drawImg(this.position.x, this.position.y);
+	    } else if (this.game.over()) {
+	      window.clearInterval(this.buildingInterval);
 	    }
-	    //  else if (this.game.over()){
-	    //    window.clearInterval(this.buildingInterval);
-	    //  }
 	  },
 	
 	  drawImg: function (x, y) {
@@ -507,11 +503,7 @@
 	  },
 	
 	  render: function () {
-	    var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
-	
-	    this.goBuildingGo();
-	    requestAnimationFrame(this.render.bind(this));
-	    //  this.buildingInterval = window.setInterval(this.goBuildingGo.bind(this), 17);
+	    this.buildingInterval = window.setInterval(this.goBuildingGo.bind(this), 17);
 	  }
 	
 	};
@@ -562,12 +554,7 @@
 	  },
 	
 	  render: function () {
-	
-	    var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
-	
-	    this.goBalloonGo();
-	    requestAnimationFrame(this.render.bind(this));
-	    //  this.balloonInterval = window.setInterval(this.goBalloonGo.bind(this), 17);
+	    this.balloonInterval = window.setInterval(this.goBalloonGo.bind(this), 17);
 	  }
 	
 	};
