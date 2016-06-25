@@ -6,6 +6,8 @@ canvas {
   position: absolute;
   left: 25%;
   top: 5%;
+  height: 70%;
+  width: auto;
 }
 
 div {
@@ -32,4 +34,30 @@ div {
 
 #menu {
   z-index: 5;
+}
+
+ul {
+  list-style: none;
+  position: relative;
+  top: 75%;
+  left: 35%;
+  float: left;
+  font-family: monospace;
+}
+
+li {
+  float: left;
+  margin-left: 20px;
+  cursor: pointer;
+  padding: 10px 20px;
+}
+
+li a {
+  text-decoration: none;
+  color: black;
+}
+
+li:hover {
+  background: white;
+  border-bottom: 5px solid #9ae7ff;
 }

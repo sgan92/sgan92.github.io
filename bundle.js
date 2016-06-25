@@ -220,8 +220,8 @@
 	  },
 	
 	  addMoreObstacles: function () {
-	    const balloonYs = [0, -40, -80, -120];
-	    const buildingYs = [600, 540, 500, 460];
+	    const balloonYs = [0, -50, -100, -150];
+	    const buildingYs = [600, 550, 500, 450];
 	    const randomIndex = this.chooseRandomY();
 	    const balloonPosition = { x: 800, y: balloonYs[randomIndex] };
 	    const buildingPosition = { x: 800, y: buildingYs[randomIndex] };
