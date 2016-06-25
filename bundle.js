@@ -587,86 +587,98 @@
 
 	"use strict";
 	
-	var Menu = function Menu(started, currentScore) {
-	  this.started = started;
-	  this.currentScore = currentScore;
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	  this.canvas = document.getElementById("menu");
-	  this.context = this.canvas.getContext("2d");
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
-	  this.render();
-	};
+	var Menu = function () {
+	  function Menu(started, currentScore) {
+	    _classCallCheck(this, Menu);
 	
-	Menu.prototype = {
+	    this.started = started;
+	    this.currentScore = currentScore;
+	    this.canvas = document.getElementById("menu");
+	    this.context = this.canvas.getContext("2d");
 	
-	  gameIsOverBuddy: function gameIsOverBuddy() {
-	    this.context.clearRect(0, 0, 800, 1000);
-	    var over = new Image();
-	    over.src = "./images/gameOver.png";
-	    over.onload = function () {
-	      this.context.drawImage(over, 260, 300);
-	      this.revealScore();
-	    }.bind(this);
-	  },
+	    this.render();
+	  }
 	
-	  revealScore: function revealScore() {
-	    var whichImage = new Image();
+	  _createClass(Menu, [{
+	    key: "gameIsOverBuddy",
+	    value: function gameIsOverBuddy() {
 	
-	    if (this.currentScore <= 6) {
-	      whichImage.src = "./images/bronze.png";
-	    } else if (this.currentScore <= 20) {
-	      whichImage.src = "./images/silver.png";
-	    } else {
-	      whichImage.src = "./images/gold.png";
+	      this.context.clearRect(0, 0, 800, 1000);
+	      var over = new Image();
+	      over.src = "./images/gameOver.png";
+	      over.onload = function () {
+	        this.context.drawImage(over, 260, 300);
+	        this.revealScore();
+	      }.bind(this);
 	    }
+	  }, {
+	    key: "revealScore",
+	    value: function revealScore() {
+	      var whichImage = new Image();
 	
-	    whichImage.onload = function () {
-	      this.context.drawImage(whichImage, 370, 470);
-	      this.context.lineWidth = 2;
+	      if (this.currentScore <= 6) {
+	        whichImage.src = "./images/bronze.png";
+	      } else if (this.currentScore <= 20) {
+	        whichImage.src = "./images/silver.png";
+	      } else {
+	        whichImage.src = "./images/gold.png";
+	      }
+	
+	      whichImage.onload = function () {
+	        this.context.drawImage(whichImage, 370, 470);
+	        this.context.lineWidth = 2;
+	        this.context.strokeStyle = "black";
+	
+	        this.context.font = "22px Share Tech Mono";
+	        this.context.strokeText(this.currentScore, 360, 520);
+	        this.context.stroke();
+	      }.bind(this);
+	    }
+	  }, {
+	    key: "startScoring",
+	    value: function startScoring() {
+	      this.context.clearRect(0, 0, 800, 1000);
+	
+	      this.context.lineWidth = 3;
+	      this.context.fillStyle = "white";
 	      this.context.strokeStyle = "black";
 	
-	      this.context.font = "22px Share Tech Mono";
-	      this.context.strokeText(this.currentScore, 360, 520);
+	      this.context.font = "120px Share Tech Mono";
+	      this.context.fillText(this.currentScore, 390, 200);
+	      this.context.strokeText(this.currentScore, 390, 200);
+	
+	      this.context.fill();
 	      this.context.stroke();
-	    }.bind(this);
-	  },
+	    }
+	  }, {
+	    key: "render",
+	    value: function render() {
+	      var startButton = new Image();
+	      var instructions = new Image();
+	      var logo = new Image();
+	      startButton.src = "./images/startButton.png";
+	      instructions.src = "./images/instructions.png";
+	      logo.src = "./images/logo.png";
+	      startButton.onload = function () {
+	        this.context.drawImage(startButton, 260, 400);
+	      }.bind(this);
 	
-	  startScoring: function startScoring() {
+	      instructions.onload = function () {
+	        this.context.drawImage(instructions, 230, 530);
+	      }.bind(this);
 	
-	    this.context.clearRect(0, 0, 800, 1000);
+	      logo.onload = function () {
+	        this.context.drawImage(logo, 130, 180);
+	      }.bind(this);
+	    }
+	  }]);
 	
-	    this.context.lineWidth = 3;
-	    this.context.fillStyle = "white";
-	    this.context.strokeStyle = "black";
-	
-	    this.context.font = "120px Share Tech Mono";
-	    this.context.fillText(this.currentScore, 390, 200);
-	    this.context.strokeText(this.currentScore, 390, 200);
-	
-	    this.context.fill();
-	    this.context.stroke();
-	  },
-	
-	  render: function render() {
-	    var startButton = new Image();
-	    var instructions = new Image();
-	    var logo = new Image();
-	    startButton.src = "./images/startButton.png";
-	    instructions.src = "./images/instructions.png";
-	    logo.src = "./images/logo.png";
-	    startButton.onload = function () {
-	      this.context.drawImage(startButton, 260, 400);
-	    }.bind(this);
-	
-	    instructions.onload = function () {
-	      this.context.drawImage(instructions, 230, 530);
-	    }.bind(this);
-	
-	    logo.onload = function () {
-	      this.context.drawImage(logo, 130, 180);
-	    }.bind(this);
-	  }
-	};
+	  return Menu;
+	}();
 	
 	module.exports = Menu;
 
