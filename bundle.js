@@ -484,9 +484,9 @@
 	  goBuildingGo: function () {
 	
 	    this.context.clearRect(this.position.x, this.position.y, 402, 548);
-	    this.position.x = this.constantVelocity;
+	    this.position.x -= this.constantVelocity;
 	
-	    if (!this.game.over() && this.position.x >= 1200) {
+	    if (!this.game.over() && this.position.x >= -1200) {
 	      this.drawImg(this.position.x, this.position.y);
 	    } else if (this.game.over()) {
 	      window.clearInterval(this.buildingInterval);
@@ -533,9 +533,9 @@
 	
 	  goBalloonGo: function () {
 	    this.context.clearRect(this.position.x, this.position.y, 340, 234);
-	    this.position.x = this.constantVelocity;
+	    this.position.x -= this.constantVelocity;
 	
-	    if (!this.game.over() && this.position.x >= 400) {
+	    if (!this.game.over() && this.position.x >= -400) {
 	      this.drawImg(this.position.x, this.position.y);
 	    } else if (this.game.over()) {
 	      this.game.overScreen();
