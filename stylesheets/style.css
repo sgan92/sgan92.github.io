@@ -37,6 +37,7 @@ div {
 }
 
 ul {
+  font-size: 14px;
   list-style: none;
   position: relative;
   top: 75%;
