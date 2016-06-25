@@ -76,6 +76,10 @@
 
 	"use strict";
 	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
 	var Cloud = __webpack_require__(2);
 	var Pokemon = __webpack_require__(3);
 	var Pokeball = __webpack_require__(4);
@@ -83,156 +87,177 @@
 	var Balloon = __webpack_require__(6);
 	var Menu = __webpack_require__(7);
 	
-	var Game = function Game() {
-	  this.pokeballs = [];
-	  this.buildings = [];
-	  this.balloons = [];
-	  this.pokemon;
+	var Game = function () {
+	  function Game() {
+	    _classCallCheck(this, Game);
 	
-	  this.canvas = document.getElementById("background");
-	  this.context = this.canvas.getContext("2d");
-	  this.gameOver = true;
+	    this.pokeballs = [];
+	    this.buildings = [];
+	    this.balloons = [];
+	    this.pokemon;
 	
-	  this.startScreen();
-	  this.generateClouds();
-	};
+	    this.canvas = document.getElementById("background");
+	    this.context = this.canvas.getContext("2d");
+	    this.gameOver = true;
 	
-	Game.prototype = {
-	  startScreen: function startScreen() {
-	    this.fn = this.startGame.bind(this);
-	    document.addEventListener("keyup", this.fn, false);
-	    this.menu = new Menu(false, 0);
-	    window.setInterval(this.generateClouds.bind(this), 5000);
-	  },
+	    this.startScreen();
+	    this.generateClouds();
+	  }
 	
-	  startGame: function startGame(e) {
-	    if (e.keyCode === 13 && this.gameOver) {
-	      document.removeEventListener("keyup", this.fn, false);
-	      this.gameOver = false;
-	      this.context.clearRect(0, 0, 800, 1000);
-	
-	      this.pokeballs = [];
-	      this.buildings = [];
-	      this.balloons = [];
-	
-	      var startingPosition = { x: 80, y: 290 };
-	      this.pokemon = new Pokemon(startingPosition, this);
-	
-	      this.menu.started = true;
-	      this.menu.currentScore = 0;
-	      this.menu.startScoring();
-	
-	      this.addMoreObstacles();
-	
-	      this.addBall = window.setInterval(this.addPokeBalls.bind(this), 4567);
-	      this.addBuilding = window.setInterval(this.addMoreObstacles.bind(this), 5000);
+	  _createClass(Game, [{
+	    key: "startScreen",
+	    value: function startScreen() {
+	      this.fn = this.startGame.bind(this);
+	      document.addEventListener("keyup", this.fn, false);
+	      this.menu = new Menu(false, 0);
+	      window.setInterval(this.generateClouds.bind(this), 5000);
 	    }
-	  },
+	  }, {
+	    key: "startGame",
+	    value: function startGame(e) {
+	      if (e.keyCode === 13 && this.gameOver) {
+	        document.removeEventListener("keyup", this.fn, false);
+	        this.gameOver = false;
+	        this.context.clearRect(0, 0, 800, 1000);
 	
-	  over: function over() {
-	    this.checkCollision(this.pokeballs, "pokeball");
-	    this.checkCollision(this.buildings, "building");
-	    this.checkCollision(this.balloons, "balloon");
-	    return this.gameOver;
-	  },
+	        this.pokeballs = [];
+	        this.buildings = [];
+	        this.balloons = [];
 	
-	  checkCollision: function checkCollision(array, type) {
-	    array.forEach(function (item) {
-	      if (item.position.x <= -500) {
-	        array.splice(array.indexOf(item), 1);
-	      } else {
-	        if (this.isBetween(type, item.position.x, item.position.y, item) || this.pokemon.position.y < -100 || this.pokemon.position.y > 1200) {
-	          this.gameOver = true;
-	        }
+	        var startingPosition = { x: 80, y: 290 };
+	        this.pokemon = new Pokemon(startingPosition, this);
+	
+	        this.menu.started = true;
+	        this.menu.currentScore = 0;
+	        this.menu.startScoring();
+	
+	        this.addMoreObstacles();
+	
+	        this.addBall = window.setInterval(this.addPokeBalls.bind(this), 4567);
+	        this.addBuilding = window.setInterval(this.addMoreObstacles.bind(this), 5000);
 	      }
-	    }.bind(this));
-	  },
-	
-	  isBetween: function isBetween(type, itemX, itemY, item) {
-	    var width = void 0;
-	    var height = void 0;
-	    var hitPokemon = false;
-	
-	    if (type === "pokeball") {
-	      hitPokemon = this.checkPokeBalls(itemX, itemY);
-	    } else if (type === "building") {
-	      hitPokemon = this.checkBuildings(itemX, itemY);
-	    } else if (type === "balloon") {
-	      hitPokemon = this.checkBalloons(itemX, itemY);
 	    }
+	  }, {
+	    key: "over",
+	    value: function over() {
+	      this.checkCollision(this.pokeballs, "pokeball");
+	      this.checkCollision(this.buildings, "building");
+	      this.checkCollision(this.balloons, "balloon");
+	      return this.gameOver;
+	    }
+	  }, {
+	    key: "checkCollision",
+	    value: function checkCollision(array, type) {
+	      array.forEach(function (item) {
+	        if (item.position.x <= -500) {
+	          array.splice(array.indexOf(item), 1);
+	        } else {
+	          if (this.isBetween(type, item.position.x, item.position.y, item) || this.pokemon.position.y < -100 || this.pokemon.position.y > 1200) {
+	            this.gameOver = true;
+	          }
+	        }
+	      }.bind(this));
+	    }
+	  }, {
+	    key: "isBetween",
+	    value: function isBetween(type, itemX, itemY, item) {
+	      var width = void 0;
+	      var height = void 0;
+	      var hitPokemon = false;
 	
-	    if (hitPokemon) {
-	      return true;
-	    } else if (type === "building" && this.pokemon.position.x >= itemX + 400) {
-	      this.buildings.splice(this.buildings.indexOf(item), 1);
-	      this.menu.currentScore += 1;
-	      this.menu.startScoring();
+	      if (type === "pokeball") {
+	        hitPokemon = this.checkPokeBalls(itemX, itemY);
+	      } else if (type === "building") {
+	        hitPokemon = this.checkBuildings(itemX, itemY);
+	      } else if (type === "balloon") {
+	        hitPokemon = this.checkBalloons(itemX, itemY);
+	      }
+	
+	      if (hitPokemon) {
+	        return true;
+	      } else if (type === "building" && this.pokemon.position.x >= itemX + 400) {
+	        this.buildings.splice(this.buildings.indexOf(item), 1);
+	        this.menu.currentScore += 1;
+	        this.menu.startScoring();
+	        return false;
+	      }
+	    }
+	  }, {
+	    key: "checkBalloons",
+	    value: function checkBalloons(xPos, yPos) {
+	      if (this.checkHitBoxes(xPos, yPos - 172, 323, 233) || this.checkHitBoxes(xPos + 90, yPos + 55, 121, 167)) {
+	        return true;
+	      }
 	      return false;
 	    }
-	  },
-	
-	  checkBalloons: function checkBalloons(xPos, yPos) {
-	    if (this.checkHitBoxes(xPos, yPos - 172, 323, 233) || this.checkHitBoxes(xPos + 90, yPos + 55, 121, 167)) {
-	      return true;
+	  }, {
+	    key: "checkBuildings",
+	    value: function checkBuildings(xPos, yPos) {
+	      if (this.checkHitBoxes(xPos + 15, yPos + 130, 377, 274) || this.checkHitBoxes(xPos + 30, yPos + 70, 251, 61) || this.checkHitBoxes(xPos + 100, yPos + 20, 50, 50)) {
+	        return true;
+	      }
 	    }
-	    return false;
-	  },
-	
-	  checkBuildings: function checkBuildings(xPos, yPos) {
-	    if (this.checkHitBoxes(xPos + 15, yPos + 130, 377, 274) || this.checkHitBoxes(xPos + 30, yPos + 70, 251, 61) || this.checkHitBoxes(xPos + 100, yPos + 20, 50, 50)) {
-	      return true;
+	  }, {
+	    key: "checkPokeBalls",
+	    value: function checkPokeBalls(xPos, yPos) {
+	      if (this.checkHitBoxes(xPos, yPos, 22, 22)) {
+	        return true;
+	      }
+	      return false;
 	    }
-	  },
-	
-	  checkPokeBalls: function checkPokeBalls(xPos, yPos) {
-	    if (this.checkHitBoxes(xPos, yPos, 22, 22)) {
-	      return true;
+	  }, {
+	    key: "checkHitBoxes",
+	    value: function checkHitBoxes(itemX, itemY, width, height) {
+	      if (!(this.pokemon.position.x > itemX + width || this.pokemon.position.x + this.pokemon.width < itemX || this.pokemon.position.y > itemY + height || this.pokemon.position.y + this.pokemon.height < itemY)) {
+	        return true;
+	      }
 	    }
-	    return false;
-	  },
-	
-	  checkHitBoxes: function checkHitBoxes(itemX, itemY, width, height) {
-	    if (!(this.pokemon.position.x > itemX + width || this.pokemon.position.x + this.pokemon.width < itemX || this.pokemon.position.y > itemY + height || this.pokemon.position.y + this.pokemon.height < itemY)) {
-	      return true;
+	  }, {
+	    key: "overScreen",
+	    value: function overScreen() {
+	      this.menu.gameIsOverBuddy();
+	      window.clearInterval(this.addBall);
+	      window.clearInterval(this.addBuilding);
+	      window.addEventListener("keyup", this.fn, false);
 	    }
-	  },
+	  }, {
+	    key: "randomY",
+	    value: function randomY() {
+	      return 550 * Math.random();
+	    }
+	  }, {
+	    key: "chooseRandomY",
+	    value: function chooseRandomY() {
+	      var randomIndex = [0, 1, 2, 3];
+	      return randomIndex[Math.floor(Math.random() * randomIndex.length)];
+	    }
+	  }, {
+	    key: "generateClouds",
+	    value: function generateClouds() {
+	      var position = { x: 800, y: this.randomY() };
+	      new Cloud(position, this);
+	    }
+	  }, {
+	    key: "addPokeBalls",
+	    value: function addPokeBalls() {
+	      var position = { x: 800, y: this.randomY() };
+	      this.pokeballs.push(new Pokeball(position, this));
+	    }
+	  }, {
+	    key: "addMoreObstacles",
+	    value: function addMoreObstacles() {
+	      var balloonYs = [0, -50, -100, -150];
+	      var buildingYs = [600, 550, 500, 450];
+	      var randomIndex = this.chooseRandomY();
+	      var balloonPosition = { x: 800, y: balloonYs[randomIndex] };
+	      var buildingPosition = { x: 800, y: buildingYs[randomIndex] };
+	      this.balloons.push(new Balloon(balloonPosition, this));
+	      this.buildings.push(new Building(buildingPosition, this));
+	    }
+	  }]);
 	
-	  overScreen: function overScreen() {
-	    this.menu.gameIsOverBuddy();
-	    window.clearInterval(this.addBall);
-	    window.clearInterval(this.addBuilding);
-	    window.addEventListener("keyup", this.fn, false);
-	  },
-	
-	  randomY: function randomY() {
-	    return 550 * Math.random();
-	  },
-	
-	  chooseRandomY: function chooseRandomY() {
-	    var randomIndex = [0, 1, 2, 3];
-	    return randomIndex[Math.floor(Math.random() * randomIndex.length)];
-	  },
-	
-	  generateClouds: function generateClouds() {
-	    var position = { x: 800, y: this.randomY() };
-	    new Cloud(position, this);
-	  },
-	
-	  addPokeBalls: function addPokeBalls() {
-	    var position = { x: 800, y: this.randomY() };
-	    this.pokeballs.push(new Pokeball(position, this));
-	  },
-	
-	  addMoreObstacles: function addMoreObstacles() {
-	    var balloonYs = [0, -50, -100, -150];
-	    var buildingYs = [600, 550, 500, 450];
-	    var randomIndex = this.chooseRandomY();
-	    var balloonPosition = { x: 800, y: balloonYs[randomIndex] };
-	    var buildingPosition = { x: 800, y: buildingYs[randomIndex] };
-	    this.balloons.push(new Balloon(balloonPosition, this));
-	    this.buildings.push(new Building(buildingPosition, this));
-	  }
-	};
+	  return Game;
+	}();
 	
 	module.exports = Game;
 
@@ -495,49 +520,59 @@
 
 	"use strict";
 	
-	var Building = function Building(position, game) {
-	  this.position = position;
-	  this.game = game;
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	  this.constantVelocity = 5;
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
-	  var building = new Image();
-	  building.src = "./images/building.png";
+	var Building = function () {
+	  function Building(position, game) {
+	    _classCallCheck(this, Building);
 	
-	  this.building = {
-	    image: building
-	  };
+	    this.position = position;
+	    this.game = game;
 	
-	  this.canvas = document.getElementById("obstacles");
-	  this.context = this.canvas.getContext("2d");
+	    this.constantVelocity = 5;
 	
-	  this.render();
-	};
+	    var building = new Image();
+	    building.src = "./images/building.png";
 	
-	Building.prototype = {
+	    this.building = {
+	      image: building
+	    };
 	
-	  goBuildingGo: function goBuildingGo() {
+	    this.canvas = document.getElementById("obstacles");
+	    this.context = this.canvas.getContext("2d");
 	
-	    this.context.clearRect(this.position.x, this.position.y, 402, 548);
-	    this.position.x -= this.constantVelocity;
-	
-	    if (!this.game.over() && this.position.x >= -1200) {
-	      this.drawImg(this.position.x, this.position.y);
-	    } else if (this.game.over()) {
-	      window.clearInterval(this.buildingInterval);
-	    }
-	  },
-	
-	  drawImg: function drawImg(x, y) {
-	    this.context.clearRect(x, y, 402, 548);
-	    this.context.drawImage(this.building.image, x, y);
-	  },
-	
-	  render: function render() {
-	    this.buildingInterval = window.setInterval(this.goBuildingGo.bind(this), 17);
+	    this.render();
 	  }
 	
-	};
+	  _createClass(Building, [{
+	    key: "goBuildingGo",
+	    value: function goBuildingGo() {
+	      this.context.clearRect(this.position.x, this.position.y, 402, 548);
+	      this.position.x -= this.constantVelocity;
+	
+	      if (!this.game.over() && this.position.x >= -1200) {
+	        this.drawImg(this.position.x, this.position.y);
+	      } else if (this.game.over()) {
+	        window.clearInterval(this.buildingInterval);
+	      }
+	    }
+	  }, {
+	    key: "drawImg",
+	    value: function drawImg(x, y) {
+	      this.context.clearRect(x, y, 402, 548);
+	      this.context.drawImage(this.building.image, x, y);
+	    }
+	  }, {
+	    key: "render",
+	    value: function render() {
+	      this.buildingInterval = window.setInterval(this.goBuildingGo.bind(this), 17);
+	    }
+	  }]);
+	
+	  return Building;
+	}();
 	
 	module.exports = Building;
 
