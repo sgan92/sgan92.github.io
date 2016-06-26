@@ -10,6 +10,7 @@ Multiple canvas elements are used here so that rendering of various elements can
 
 As the building of the roof is triangular, the collision boxes can not be strictly rectangular. Same can be said with Team Rocket's balloon. Therefore, both of these obstacles had to be broken down into multiple collision boxes in order to make the game more accurate.
 
+The background music is taken from a fan project known as Pokemon ReOrchestrated (and since been closed).
+
 ##Future Directions
-- [ ] music
 - [ ] give butterfree a move to get rid of pokeballs
