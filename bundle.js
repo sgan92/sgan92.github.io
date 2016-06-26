@@ -160,6 +160,7 @@
 	        this.addBuilding = window.setInterval(this.addMoreObstacles.bind(this), 5000);
 	        this.mainMusic.volume = 0.2;
 	        this.mainMusic.play();
+	        this.backToBeginning(this.mainMusic);
 	      }
 	    }
 	  }, {
@@ -251,6 +252,7 @@
 	
 	      this.endMusic.volume = 0.2;
 	      this.endMusic.play();
+	      this.backToBeginning(this.endMusic);
 	    }
 	  }, {
 	    key: "randomY",
