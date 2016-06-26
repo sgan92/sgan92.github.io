@@ -100,22 +100,45 @@
 	    this.context = this.canvas.getContext("2d");
 	    this.gameOver = true;
 	
+	    this.instantiateMusic();
+	
 	    this.startScreen();
 	    this.generateClouds();
 	  }
 	
 	  _createClass(Game, [{
+	    key: "instantiateMusic",
+	    value: function instantiateMusic() {
+	      this.introMusic = new Audio("./music/intro.mp3");
+	      this.mainMusic = new Audio("./music/main.mp3");
+	      this.endMusic = new Audio("./music/end.mp3");
+	      this.collide = new Audio("./music/rip.wav");
+	    }
+	  }, {
+	    key: "backToBeginning",
+	    value: function backToBeginning(audioFile) {
+	      audioFile.addEventListener("ended", function (f) {
+	        audioFile.currentTime = 0;
+	        audioFile.play();
+	      }, false);
+	    }
+	  }, {
 	    key: "startScreen",
 	    value: function startScreen() {
 	      this.fn = this.startGame.bind(this);
 	      document.addEventListener("keyup", this.fn, false);
 	      this.menu = new Menu(false, 0, this);
 	      window.setInterval(this.generateClouds.bind(this), 5000);
+	      this.introMusic.play();
+	      this.backToBeginning(this.introMusic);
 	    }
 	  }, {
 	    key: "startGame",
 	    value: function startGame(e) {
 	      if (e.keyCode === 13 && this.gameOver) {
+	        this.introMusic.pause();
+	        this.endMusic.pause();
+	
 	        this.context.clearRect(0, 0, 800, 1000);
 	        document.removeEventListener("keyup", this.fn, false);
 	        this.gameOver = false;
@@ -135,6 +158,8 @@
 	
 	        this.addBall = window.setInterval(this.addPokeBalls.bind(this), 4567);
 	        this.addBuilding = window.setInterval(this.addMoreObstacles.bind(this), 5000);
+	        this.mainMusic.volume = 0.2;
+	        this.mainMusic.play();
 	      }
 	    }
 	  }, {
@@ -217,10 +242,15 @@
 	  }, {
 	    key: "overScreen",
 	    value: function overScreen() {
+	      this.collide.play();
 	      this.menu.gameIsOverBuddy();
+	      this.mainMusic.pause();
 	      window.clearInterval(this.addBall);
 	      window.clearInterval(this.addBuilding);
 	      window.addEventListener("keyup", this.fn, false);
+	
+	      this.endMusic.volume = 0.2;
+	      this.endMusic.play();
 	    }
 	  }, {
 	    key: "randomY",
@@ -376,6 +406,7 @@
 	    this.time = 0;
 	    this.fly = -15;
 	
+	    this.flySound = new Audio("./music/flap.wav");
 	    this.makeUpSprite();
 	    this.makeDownSprite();
 	
@@ -421,6 +452,8 @@
 	        this.context.clearRect(this.position.x, this.position.y, 800, 1000);
 	        this.position.y -= this.velocity;
 	        this.drawImg(this.spriteUp.image, this.position.x, this.position.y);
+	        this.flySound.play();
+	        this.flySound.currentTime = 0;
 	      } else {
 	        this.justGravity();
 	      }
