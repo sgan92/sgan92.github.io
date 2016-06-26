@@ -59,7 +59,7 @@
 	  Pokemon.width = 800;
 	  Obstacles.width = 800;
 	  Pokeballs.width = 800;
-	  Menu.width = 1000;
+	  Menu.width = 800;
 	
 	  Background.height = 1000;
 	  Pokemon.height = 1000;
@@ -113,6 +113,8 @@
 	      this.mainMusic = new Audio("./music/main.mp3");
 	      this.endMusic = new Audio("./music/end.mp3");
 	      this.collide = new Audio("./music/rip.wav");
+	
+	      this.songs = [this.introMusic, this.mainMusic, this.endMusic];
 	    }
 	  }, {
 	    key: "backToBeginning",
@@ -127,7 +129,7 @@
 	    value: function startScreen() {
 	      this.fn = this.startGame.bind(this);
 	      document.addEventListener("keyup", this.fn, false);
-	      this.menu = new Menu(false, 0, this);
+	      this.menu = new Menu(false, 0, this, this.songs);
 	      window.setInterval(this.generateClouds.bind(this), 5000);
 	      this.introMusic.play();
 	      this.backToBeginning(this.introMusic);
@@ -730,36 +732,95 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	var Menu = function () {
-	  function Menu(started, currentScore, game) {
+	  function Menu(started, currentScore, game, songs) {
 	    _classCallCheck(this, Menu);
 	
 	    this.started = started;
 	    this.game = game;
-	    this.bestScore = 0;
+	    this.songs = songs;
 	    this.currentScore = currentScore;
+	
+	    this.bestScore = 0;
+	    this.musicIcon = new Image();
+	    this.musicIcon.src = "./images/playSomeMusic.png";
+	
 	    this.canvas = document.getElementById("menu");
 	    this.context = this.canvas.getContext("2d");
-	
+	    this.audioButton = document.getElementById("audio");
+	    this.mute = false;
 	    this.render();
 	  }
 	
 	  _createClass(Menu, [{
-	    key: "gameIsOverBuddy",
-	    value: function gameIsOverBuddy() {
+	    key: "toggleMusic",
+	    value: function toggleMusic() {
+	      if (!this.mute) {
+	        this.musicIcon.src = "./images/saveEars.png";
+	        this.mute = true;
+	      } else {
+	        this.musicIcon.src = "./images/playSomeMusic.png";
+	        this.mute = false;
+	      }
+	      this.setSongState();
+	      this.drawMusicIcon();
+	    }
+	  }, {
+	    key: "showMusicIcon",
+	    value: function showMusicIcon() {
 	      var _this = this;
 	
+	      this.drawMusicIcon();
+	      var musicListener = document.addEventListener("keyup", function (e) {
+	        if (e.keyCode === 77) {
+	          e.preventDefault();
+	          _this.toggleMusic();
+	        }
+	        document.removeEventListener("keyup", musicListener, false);
+	      }, false);
+	    }
+	  }, {
+	    key: "drawMusicIcon",
+	    value: function drawMusicIcon() {
+	      var _this2 = this;
+	
+	      this.musicIcon.onload = function (f) {
+	        _this2.context.clearRect(700, 900, 100, 100);
+	        _this2.context.drawImage(_this2.musicIcon, 700, 900);
+	      };
+	    }
+	  }, {
+	    key: "setSongState",
+	    value: function setSongState() {
+	      var _this3 = this;
+	
+	      this.songs.forEach(function (song) {
+	        if (_this3.mute) {
+	          song.muted = true;
+	        } else {
+	          song.muted = false;
+	        }
+	      });
+	    }
+	  }, {
+	    key: "gameIsOverBuddy",
+	    value: function gameIsOverBuddy() {
+	      var _this4 = this;
+	
+	      this.context.clearRect(700, 900, 100, 100);
+	      this.drawMusicIcon();
 	      this.context.clearRect(0, 0, 800, 1000);
 	      var over = new Image();
 	      over.src = "./images/gameOver.png";
 	      over.onload = function (f) {
-	        _this.context.drawImage(over, 260, 300);
-	        _this.revealScore();
+	        _this4.context.drawImage(over, 260, 300);
+	        _this4.revealScore();
 	      };
+	      this.context.drawImage(this.musicIcon, 700, 900);
 	    }
 	  }, {
 	    key: "revealScore",
 	    value: function revealScore() {
-	      var _this2 = this;
+	      var _this5 = this;
 	
 	      this.isBestScore();
 	
@@ -774,15 +835,15 @@
 	      }
 	
 	      whichImage.onload = function (f) {
-	        _this2.context.drawImage(whichImage, 370, 470);
-	        _this2.context.lineWidth = 2;
-	        _this2.context.strokeStyle = "black";
+	        _this5.context.drawImage(whichImage, 370, 470);
+	        _this5.context.lineWidth = 2;
+	        _this5.context.strokeStyle = "black";
 	
-	        _this2.context.font = "22px Share Tech Mono";
-	        _this2.context.strokeText(_this2.currentScore, 360, 520);
-	        _this2.context.stroke();
+	        _this5.context.font = "22px Share Tech Mono";
+	        _this5.context.strokeText(_this5.currentScore, 360, 520);
+	        _this5.context.stroke();
 	
-	        _this2.revealBestScore();
+	        _this5.revealBestScore();
 	      };
 	    }
 	  }, {
@@ -817,11 +878,14 @@
 	
 	      this.context.fill();
 	      this.context.stroke();
+	
+	      this.context.clearRect(700, 900, 100, 100);
+	      this.context.drawImage(this.musicIcon, 700, 900);
 	    }
 	  }, {
 	    key: "render",
 	    value: function render() {
-	      var _this3 = this;
+	      var _this6 = this;
 	
 	      var startButton = new Image();
 	      var instructions = new Image();
@@ -830,16 +894,18 @@
 	      instructions.src = "./images/instructions.png";
 	      logo.src = "./images/logo.png";
 	      startButton.onload = function (f) {
-	        _this3.context.drawImage(startButton, 260, 400);
+	        _this6.context.drawImage(startButton, 260, 400);
 	      };
 	
 	      instructions.onload = function (f) {
-	        _this3.context.drawImage(instructions, 230, 530);
+	        _this6.context.drawImage(instructions, 230, 530);
 	      };
 	
 	      logo.onload = function (f) {
-	        _this3.context.drawImage(logo, 130, 180);
+	        _this6.context.drawImage(logo, 130, 180);
 	      };
+	
+	      this.showMusicIcon();
 	    }
 	  }]);
 	
