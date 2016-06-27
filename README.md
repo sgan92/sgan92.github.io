@@ -24,6 +24,17 @@ For instance, the building has three collision boxes, each of which is checked. 
   }
 ```
 
+The score of this game is also saved in the browser's cookies so that refreshing/coming back to the browser will not effect the high score for the individual. The expiry date for this cookie is 5 months, so if no high score is set within 5 months, the high score will reset.
+
+```javascript
+  setBestCookie () {
+    const currentDate = new Date ();
+    currentDate.setMonth(currentDate.getMonth() + 5);
+    const expires = "expires=" + currentDate.toGMTString();
+    document.cookie = "bestScore=" + this.bestScore + ";" + expires + ";path=/";
+  }
+```
+
 The background music is taken from a fan project known as Pokemon ReOrchestrated (and since been closed).
 
 ##Future Directions

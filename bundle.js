@@ -752,6 +752,13 @@
 	  }
 	
 	  _createClass(Menu, [{
+	    key: "retrieveBestScore",
+	    value: function retrieveBestScore() {
+	      if (document.cookie.length !== 0) {
+	        this.bestScore = parseInt(document.cookie.split("=")[1]);
+	      }
+	    }
+	  }, {
 	    key: "toggleMusic",
 	    value: function toggleMusic() {
 	      if (!this.mute) {
@@ -816,6 +823,7 @@
 	        _this4.revealScore();
 	      };
 	      this.context.drawImage(this.musicIcon, 700, 900);
+	      this.retrieveBestScore();
 	    }
 	  }, {
 	    key: "revealScore",
@@ -842,7 +850,6 @@
 	        _this5.context.font = "22px Share Tech Mono";
 	        _this5.context.strokeText(_this5.currentScore, 360, 520);
 	        _this5.context.stroke();
-	
 	        _this5.revealBestScore();
 	      };
 	    }
@@ -850,8 +857,18 @@
 	    key: "isBestScore",
 	    value: function isBestScore() {
 	      if (this.bestScore < this.currentScore) {
+	        console.log("set bestScore");
 	        this.bestScore = this.currentScore;
+	        this.setBestCookie();
 	      }
+	    }
+	  }, {
+	    key: "setBestCookie",
+	    value: function setBestCookie() {
+	      var currentDate = new Date();
+	      currentDate.setMonth(currentDate.getMonth() + 5);
+	      var expires = "expires=" + currentDate.toGMTString();
+	      document.cookie = "bestScore=" + this.bestScore + ";" + expires + ";path=/";
 	    }
 	  }, {
 	    key: "revealBestScore",
