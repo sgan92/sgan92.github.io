@@ -1,5 +1,8 @@
 body {
-  background: #f1f1f1;
+  background:
+    linear-gradient(
+      white, #afdae5
+    );
   margin: 0;
   padding: 0;
 }
