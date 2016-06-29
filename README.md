@@ -1,6 +1,6 @@
 # Dodge That Pokéball!
 You can play the game live [here](http://sgan.me/DodgePokeball/index.html).
-Dodge That Pokeball was inspired by [Flappy Bird](http://flappybird.io/), where instead of a bird, the player controls a Butterfree avoid buildings, Team Rocket, and the occassional pokéball.
+Dodge That Pokéball was inspired by [Flappy Bird](http://flappybird.io/), where instead of a bird, the player controls a Butterfree avoid buildings, Team Rocket, and the occassional pokéball.
 
 ![alt text](http://i.imgur.com/2xQudqh.png)
 
@@ -24,7 +24,7 @@ For instance, the building has three collision boxes, each of which is checked. 
   }
 ```
 
-The score of this game is also saved in the browser's cookies so that refreshing/coming back to the browser will not effect the high score for the individual. The expiry date for this cookie is 5 months, so if no high score is set within 5 months, the high score will reset.
+The score of this game is also saved in the browser's cookies so that refreshing/coming back to the browser will not affect the high score for the individual. The expiry date for this cookie is 5 months, so if no high score is set within 5 months, the high score will reset.
 
 ```javascript
   setBestCookie () {
